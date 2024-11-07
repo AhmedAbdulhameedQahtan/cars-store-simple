@@ -64,6 +64,7 @@ ThemeData getApplicationTheme(){
       //label style
       labelStyle: getRegularStyle(color: ColorsManager.gray,fontSize: FontSize.s14),
 
+      fillColor: ColorsManager.lightgray200,
       //error style
       errorStyle: getRegularStyle(color: ColorsManager.error),
 
@@ -74,7 +75,7 @@ ThemeData getApplicationTheme(){
 
       //focused border style
       focusedBorder:  OutlineInputBorder(
-        borderSide: BorderSide(color: ColorsManager.gray,width: AppSize.s1_5),
+        borderSide: BorderSide(color: ColorsManager.primary,width: AppSize.s1_5),
         borderRadius:const BorderRadius.all(Radius.circular(AppSize.s8)),),
 
       //error border style

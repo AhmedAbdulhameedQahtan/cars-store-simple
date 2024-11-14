@@ -4,7 +4,6 @@ import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import 'package:simple_car_store/view/home_view.dart';
 import 'package:simple_car_store/view/register_view.dart';
-import '../model/firbase_auth.dart';
 import '../resources/assets_manager.dart';
 import '../resources/values_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,6 +23,7 @@ class _LoginViewState extends State<LoginView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String errorMessage = "";
   bool checkBoxState = false;
+  bool obscureText = true;
 
   Future<void> _login(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -150,6 +150,7 @@ class _LoginViewState extends State<LoginView> {
           key: _formKey,
           child: ListView(
             children: [
+              // text in the head of page
               Container(
                   width: size.width,
                   height: size.height / 4,
@@ -184,9 +185,7 @@ class _LoginViewState extends State<LoginView> {
                     ],
                   )),
 
-              const SizedBox(
-                height: AppSize.s50,
-              ),
+              const SizedBox(height: AppSize.s50,),
 
               // text form feald email
               Container(
@@ -210,19 +209,24 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(
                 height: AppSize.s30,
               ),
-              // text form feald password
 
+              // text form feald password
               Container(
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: TextFormField(
+                  obscureText: obscureText,
                   controller: _passwordController,
                   keyboardType: TextInputType.visiblePassword,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.lock),
                     iconColor: Colors.black54,
                     suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.remove_red_eye),
+                      onPressed: () {
+                        setState(() {
+                          obscureText =! obscureText;
+                        });
+                      },
+                      icon: obscureText ? const Icon(Icons.visibility): const Icon(Icons.visibility_off) ,
                     ),
                     filled: true,
                     hintText: "Password",

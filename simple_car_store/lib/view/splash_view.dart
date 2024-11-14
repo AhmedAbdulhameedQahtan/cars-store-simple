@@ -5,7 +5,6 @@ import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import 'package:simple_car_store/resources/values_manager.dart';
 import 'package:simple_car_store/view/home_view.dart';
-import 'package:simple_car_store/view/login_view.dart';
 import '../model/firbase_auth.dart';
 import '../resources/color_manager.dart';
 import '../resources/constant_manager.dart';
@@ -64,7 +63,7 @@ class _SplashViewState extends State<SplashView> {
 
       appBar: null,
 
-      backgroundColor: ColorsManager.white,
+      backgroundColor: ColorsManager.lightBlack,
 
       body:Container(
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import 'package:simple_car_store/view/home_view.dart';
@@ -16,6 +17,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -38,10 +40,12 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> signIn() async {
+
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
     if (!isEmailValid(email)) {
+
       // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
       showDialog(
         context: context,
@@ -85,10 +89,7 @@ class _LoginViewState extends State<LoginView> {
         if (checkBoxState) {
           _login(context);
         }
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeView()),
-        );
+        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomeView()),);
       }
     } catch (e) {
       setState(() {
@@ -188,60 +189,28 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: AppSize.s50,),
 
               // text form feald email
-              Container(
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                child: TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.email_outlined),
-                    filled: true,
-                    hintText: "Email",
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'please fill the email input';
-                    }
-                  },
-                ),
+              CustomTextFormField(
+                textController: _emailController,
+                textInputType: TextInputType.emailAddress,
+                prefixIcon:const  Icon(Icons.email_outlined),
+                hintText: "Email",
               ),
-
+              
               const SizedBox(
                 height: AppSize.s30,
               ),
 
               // text form feald password
-              Container(
-                margin: const EdgeInsets.only(left: 20, right: 20),
-                child: TextFormField(
-                  obscureText: obscureText,
-                  controller: _passwordController,
-                  keyboardType: TextInputType.visiblePassword,
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.lock),
-                    iconColor: Colors.black54,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          obscureText =! obscureText;
-                        });
-                      },
-                      icon: obscureText ? const Icon(Icons.visibility): const Icon(Icons.visibility_off) ,
-                    ),
-                    filled: true,
-                    hintText: "Password",
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'please fill the password input';
-                    }
-                  },
-                ),
+              CustomTextFormField(
+                textController: _passwordController,
+                textInputType: TextInputType.visiblePassword,
+                prefixIcon:const  Icon(Icons.lock),
+                hintText: "Password",
+                obscureText: true,
               ),
 
-              const SizedBox(
-                height: AppSize.s4,
-              ),
+
+              const SizedBox(height: AppSize.s4),
 
               //check box and forget password
               Container(

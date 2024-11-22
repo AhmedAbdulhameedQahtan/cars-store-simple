@@ -13,5 +13,5 @@ class ImageAssets{
   static const String car7 = "$imagePath/car7.png";
   static const String car8 = "$imagePath/car8.png";
   static const String car9 = "$imagePath/splash2.png";
-  static const List<String> carimage = [car1,car2,car3,car4,car5,car6,car7,car8,car9];
+  static const List<String> carimage = [car2,car3,car4,car5,car6,car7,car8,car9,car1];
 }

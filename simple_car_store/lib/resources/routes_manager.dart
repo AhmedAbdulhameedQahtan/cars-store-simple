@@ -35,7 +35,7 @@ class RoutGenerator{
       case Routes.homeRoute:
         return MaterialPageRoute(builder: (_)=>const HomeView());
       case Routes.detailsRoute:
-        return MaterialPageRoute(builder: (_)=>const DetailsView());
+        return MaterialPageRoute(builder: (_)=> DetailsView());
       case Routes.noBoardingRoute:
         return MaterialPageRoute(builder: (_)=>const OnBoardingView());
       default:

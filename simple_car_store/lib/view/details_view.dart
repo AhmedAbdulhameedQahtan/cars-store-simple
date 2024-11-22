@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-
-import '../resources/assets_manager.dart';
+import 'package:simple_car_store/resources/assets_manager.dart';
+import 'package:simple_car_store/resources/font_manager.dart';
 import '../resources/color_manager.dart';
 
 class DetailsView extends StatefulWidget {
-  const DetailsView({super.key});
+  String? img;
+  String? name;
+  String? price;
+
+  DetailsView({super.key});
+
+  DetailsView.details(
+      {super.key, required this.img, required this.name, required this.price});
 
   @override
   State<DetailsView> createState() => _DetailsViewState();
@@ -14,816 +21,230 @@ class _DetailsViewState extends State<DetailsView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return  Container(
-        margin: EdgeInsets.only(top: 10),
-        height: size.height,
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(left: 5,right: 5),
-              width: size.width,
-              height: size.height/9.5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorsManager.lightBlack,
+        elevation: 0,
+          iconTheme: IconThemeData(color: ColorsManager.white)),
+        body: Container(
+          width: size.width,
+          height: size.height,
+          child: Stack(
                 children: [
-                  Container(
-                    width: size.width/2,
-                    height: size.height,
+          Container(
+              height: size.height / 2.5,
+              width: size.width,
+              decoration: BoxDecoration(
+                color: ColorsManager.lightBlack,
+              ),
+              child: Center(
+                child: Image.asset(
+                  widget.img!,
+                  width: 350,
+                  height: 350,
+                ),
+              )),
+          Positioned(
+            bottom: 0,
+            child: Container(
+              height: size.height - (size.height / 2.1),
+              width: size.width,
+              margin: const EdgeInsets.only(top: 0),
+              decoration: BoxDecoration(
+                borderRadius:const BorderRadius.only(topRight:  Radius.circular(30),topLeft:  Radius.circular(30)),
+                color: ColorsManager.white,
+              ),
+
+              child:Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // car name and review
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15,right: 15),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 10,right: 10),
-                          width: 60,
-                          height: 60,
-                          decoration:const BoxDecoration(
-                              shape: BoxShape.circle,
-                              // color: Colors.grey,
-                              image: DecorationImage(image: AssetImage(ImageAssets.person),
-                                fit: BoxFit.cover,
-                              )
-                          ),
+                      Text(widget.name!,style: const TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s30),),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: (){},
+                                icon:const Icon(Icons.star ,color: Colors.yellow,)
+                            ),
+                            const Text("(4.5)",style: TextStyle(fontWeight: FontWeighManager.bold,)),
+                          ],
                         ),
+                      ),
+                    ],
+                    ),
+                  ),
+
+                 // details text
+                 const Padding(
+                      padding:  EdgeInsets.only(top: 10,left: 15,right: 15),
+                    child: Text("Jeep Rubicon Off-road Petrol V6 Jeep Rubicon Off-road Petrol V6"),
+                  ),
+
+                  // Features container
+                  Container(
+                    width: size.width,
+                    height: size.height/3.7,
+                    // color: ColorsManager.lightgray200,
+                    padding:const  EdgeInsets.only(top: 10,left: 15,right: 15),
+                    child:Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Features",style: TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s16)),
                         Container(
-                          margin: const EdgeInsets.only(top: 22,left: 5),
-                          child:const Column(
+                          padding: const EdgeInsets.all(3),
+                          // color: ColorsManager.lightBlack,
+                          width: size.width,
+                          height: size.height/4.5,
+                          child:Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Text('Ahmed Qahtan',
-                                style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12),),
-                              Text('@qahtan.dev',
-                                style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12),),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: ColorsManager.lightgray200,
+                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),  // لون الظل
+                                      spreadRadius: 0.6,                       // انتشار الظل
+                                      blurRadius: 1,                         // مقدار الضبابية
+                                      offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
+                                    ),
+                                  ],
+                                ),
+                                width: size.width/4,
+                                height: size.height/5.5,
+                                padding: EdgeInsets.only(left: 6),
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(Icons.airline_seat_recline_extra_sharp),
+                                    Text("Total Capacity"),
+                                    Text("4 seats",style:TextStyle(fontWeight: FontWeight.bold),)
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: ColorsManager.lightgray200,
+                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),  // لون الظل
+                                      spreadRadius: 0.6,                       // انتشار الظل
+                                      blurRadius: 1,                         // مقدار الضبابية
+                                      offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
+                                    ),
+                                  ],
+                                ),
+                                width: size.width/4,
+                                height: size.height/5.5,
+                                padding: EdgeInsets.only(left: 6),
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(Icons.speed),
+                                    Text("Highest speed"),
+                                    Text("200 KM/H",style:TextStyle(fontWeight: FontWeight.bold),)
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: ColorsManager.lightgray200,
+                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),  // لون الظل
+                                      spreadRadius: 0.6,                       // انتشار الظل
+                                      blurRadius: 1,                         // مقدار الضبابية
+                                      offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
+                                    ),
+                                  ],
+                                ),
+                                width: size.width/4,
+                                height: size.height/5.5,
+                                padding: EdgeInsets.only(left: 6),
+                                child: const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(Icons.directions_car_filled),
+                                    Text("Engine output"),
+                                    Text("500 HP",style:TextStyle(fontWeight: FontWeight.bold),)
+                                  ],
+                                ),
+                              ),
                             ],
-                          ),
-                        ),
+
+                          )
+                        )
                       ],
                     ),
                   ),
-                  IconButton(
-                      onPressed: (){},
-                      icon:const Icon(Icons.notifications_none)),
-                ],
-              ),
-            ),
 
-            const SizedBox(height: 10,),
+                //   price and button container
+                  Container(
+                     // color: ColorsManager.primary,
+                    width: size.width,
+                    height: size.height/9,
+                    padding:const  EdgeInsets.only(left: 0,right: 0),
 
-            // search container
-            Container(
-              padding: const EdgeInsets.only(left: 5,right: 12),
-              width: size.width,
-              height: size.height/9.5,
-              // decoration:const BoxDecoration(
-              //   color: Colors.yellow,
-              //     borderRadius: BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10))
-              // ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 10),
-                    // padding: const EdgeInsets.only(left: 5,right: 15),
-                    width: size.width/1.3,
-                    // height: 50,
-                    // decoration: BoxDecoration(
-                    //   color: Colors.grey[100],
-                    //   borderRadius: const BorderRadius.all(Radius.circular(40)),
-                    // ),
-                    child: TextFormField(
-                      decoration:  const InputDecoration(
-                        border:OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
-                            borderSide:BorderSide.none
-                        ) ,
-                        prefixIcon: Icon(Icons.search,color: Colors.grey,),
-                        filled: true,
-                        // fillColor: Colors.grey[200],
-                        hintText: "Search jobs..",
-                        // hintStyle: const TextStyle(color: Colors.grey,)
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration:  BoxDecoration(
-                      color: ColorsManager.primary, // خلفية الزر
-                      shape: BoxShape.circle, // شكل دائري للزر
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.menu),
-                      color: Colors.white, // لون الأيقونة
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        // price text
+                         Container(
+                           padding:const  EdgeInsets.only(top:25),
+                          child: const Column(
+                            children: [
+                              Text("price",style: TextStyle(fontWeight: FontWeighManager.bold,)),
+                              Text("18,500",style: TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s20)),
+                            ],
+                          ),
+                        ),
+
+                        // elevation button to buy
+                        Container(
+                          width: size.width /1.5,
+                          padding:const  EdgeInsets.only(top:15),
+
+                          // margin: const EdgeInsets.only(left: 20,right: 20),
+                          child: ElevatedButton(
+                            onPressed: (){
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: ColorsManager.primary,
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10), // التحكم في المسافات الداخلية (حجم الزر)
+                              shape: RoundedRectangleBorder( // شكل الزر (حواف مستديرة)
+                                borderRadius: BorderRadius.circular(20), // تحديد نصف قطر الزوايا
+                              ),
+                            ),
+                            child:   Text('Buy now',style: TextStyle(color:ColorsManager.white,fontWeight: FontWeighManager.bold),),
+
+                          ),
+                        ),
+
+                      ],
                     ),
                   )
+
                 ],
-              ),
+              ) ,
+
             ),
-            // recent show more container
-            Container(
-              width: size.width,
-              height: 30,
-              padding:const EdgeInsets.only(left: 10,right: 10),
-              child:const  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Resent',style: TextStyle(fontWeight: FontWeight.w700),),
-                  Text('Show more',style: TextStyle(fontWeight: FontWeight.w700,color: Colors.grey))
-                ],
-              ),
-            ),
-
-            // menu container
-            Container(
-              height: size.height/1.4,
-              width: size.width,
-              margin:const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius:const BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
-              ),
-              child: GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 250.0),
-                children: [
-                  // cards container
-                  Container(
-                      margin:const EdgeInsets.all(10),
-                      padding:const EdgeInsets.all(15),
-                      // width: size.width/2,
-                      // height: size.height/3,
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),  // لون الظل
-                            spreadRadius: 0.2,                       // انتشار الظل
-                            blurRadius: 6,                         // مقدار الضبابية
-                            offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                          ),
-                        ],
-                        image: const DecorationImage(
-                          image: AssetImage(ImageAssets.splashImagelog),
-                          // fit: BoxFit.cover
-                        ),
-                      ),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.favorite_border ,color: ColorsManager.lightgray,),
-                          SizedBox(height: 130,),
-                          Text("djdjdjjdjdjdjdj"),
-                          Text("price 2000"),
-                        ],
-                      )
-                  ),
-                  Container(
-                      margin:const EdgeInsets.all(10),
-                      padding:const EdgeInsets.all(15),
-                      // width: size.width/2,
-                      // height: size.height/3,
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),  // لون الظل
-                            spreadRadius: 0.2,                       // انتشار الظل
-                            blurRadius: 6,                         // مقدار الضبابية
-                            offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                          ),
-                        ],
-                        image: const DecorationImage(
-                          image: AssetImage(ImageAssets.splashImagelog),
-                          // fit: BoxFit.cover
-                        ),
-                      ),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.favorite_border ,color: ColorsManager.lightgray,),
-                          SizedBox(height: 130,),
-                          Text("djdjdjjdjdjdjdj"),
-                          Text("price 2000"),
-                        ],
-                      )
-                  ),
-                  Container(
-                      margin:const EdgeInsets.all(10),
-                      padding:const EdgeInsets.all(15),
-                      // width: size.width/2,
-                      // height: size.height/3,
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),  // لون الظل
-                            spreadRadius: 0.2,                       // انتشار الظل
-                            blurRadius: 6,                         // مقدار الضبابية
-                            offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                          ),
-                        ],
-                        image: const DecorationImage(
-                          image: AssetImage(ImageAssets.splashImagelog),
-                          // fit: BoxFit.cover
-                        ),
-                      ),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.favorite_border ,color: ColorsManager.lightgray,),
-                          SizedBox(height: 130,),
-                          Text("djdjdjjdjdjdjdj"),
-                          Text("price 2000"),
-                        ],
-                      )
-                  ),
-                  Container(
-                      margin:const EdgeInsets.all(10),
-                      padding:const EdgeInsets.all(15),
-                      // width: size.width/2,
-                      // height: size.height/3,
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),  // لون الظل
-                            spreadRadius: 0.2,                       // انتشار الظل
-                            blurRadius: 6,                         // مقدار الضبابية
-                            offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                          ),
-                        ],
-                        image: const DecorationImage(
-                          image: AssetImage(ImageAssets.splashImagelog),
-                          // fit: BoxFit.cover
-                        ),
-                      ),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.favorite_border ,color: ColorsManager.lightgray,),
-                          SizedBox(height: 130,),
-                          Text("djdjdjjdjdjdjdj"),
-                          Text("price 2000"),
-                        ],
-                      )
-                  ),
-                  Container(
-                      margin:const EdgeInsets.all(10),
-                      padding:const EdgeInsets.all(15),
-                      // width: size.width/2,
-                      // height: size.height/3,
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),  // لون الظل
-                            spreadRadius: 0.2,                       // انتشار الظل
-                            blurRadius: 6,                         // مقدار الضبابية
-                            offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                          ),
-                        ],
-                        image: const DecorationImage(
-                          image: AssetImage(ImageAssets.splashImagelog),
-                          // fit: BoxFit.cover
-                        ),
-                      ),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.favorite_border ,color: ColorsManager.lightgray,),
-                          SizedBox(height: 130,),
-                          Text("djdjdjjdjdjdjdj"),
-                          Text("price 2000"),
-                        ],
-                      )
-                  ),
-                  Container(
-                      margin:const EdgeInsets.all(10),
-                      padding:const EdgeInsets.all(15),
-                      // width: size.width/2,
-                      // height: size.height/3,
-                      decoration: BoxDecoration(
-                        borderRadius:const BorderRadius.all(Radius.circular(15)),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),  // لون الظل
-                            spreadRadius: 0.2,                       // انتشار الظل
-                            blurRadius: 6,                         // مقدار الضبابية
-                            offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                          ),
-                        ],
-                        image: const DecorationImage(
-                          image: AssetImage(ImageAssets.splashImagelog),
-                          // fit: BoxFit.cover
-                        ),
-                      ),
-                      child:Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.favorite_border ,color: ColorsManager.lightgray,),
-                          SizedBox(height: 130,),
-                          Text("djdjdjjdjdjdjdj"),
-                          Text("price 2000"),
-                        ],
-                      )
-                  ),
-
-                  // Container(
-                  //     margin:const EdgeInsets.all(10),
-                  //     padding: EdgeInsets.all(15),
-                  //     width: size.width,
-                  //     height: size.height/3,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.all(Radius.circular(15)),
-                  //       color: Colors.white,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.5),  // لون الظل
-                  //           spreadRadius: 0.2,                       // انتشار الظل
-                  //           blurRadius: 6,                         // مقدار الضبابية
-                  //           offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     child:Column(
-                  //       children: [
-                  //         // image and icon container
-                  //         Container(
-                  //           height:80,
-                  //           child:  Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Container(
-                  //                 width: size.width/2,
-                  //                 height: size.height,
-                  //                 child: Row(
-                  //                   children: [
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(left: 10),
-                  //                       width: 60,
-                  //                       height: 60,
-                  //                       decoration: const BoxDecoration(
-                  //                           shape: BoxShape.circle,
-                  //                           // color: Colors.grey,
-                  //                           image: DecorationImage(image: AssetImage('assets/ahmed.png'),
-                  //                             fit: BoxFit.cover,
-                  //                           )
-                  //                       ),
-                  //                     ),
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(top: 18,left: 5),
-                  //                       child:const Column(
-                  //                         children: [
-                  //                           Text('Ahmed Qahtan',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15),),
-                  //                           Text('Flutter Developer',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12),),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               IconButton(
-                  //                   onPressed: (){},
-                  //                   color: Colors.grey,
-                  //                   icon:const Icon(Icons.add_circle)),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         const SizedBox(height: 5,),
-                  //
-                  //         Container(
-                  //           // color: Colors.red,
-                  //           child:const Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Text('create flutter application', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //               Text('posted 1 hour ago',
-                  //                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.w700,color: Colors.grey),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         // review container
-                  //         SizedBox(
-                  //           child: Row(
-                  //             children: [
-                  //               IconButton(
-                  //                 onPressed:(){},
-                  //                 icon:const Icon(Icons.star),color: Colors.yellow,),
-                  //               const Text('4.5 review', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         const SizedBox(height: 40,),
-                  //         Container(
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               const SizedBox(
-                  //                 child: Column(
-                  //                   crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     Text('500 RS' ,style:TextStyle(fontWeight: FontWeight.w700)),
-                  //                     Text('to one project',style:TextStyle(color: Colors.grey)),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               ElevatedButton(
-                  //                 onPressed: (){},
-                  //                 child: Text('Show details',style:TextStyle(color: Colors.white)),
-                  //                 style: ElevatedButton.styleFrom(
-                  //                   backgroundColor: Colors.blue[300],
-                  //                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // التحكم في المسافات الداخلية (حجم الزر)
-                  //
-                  //                   shape: RoundedRectangleBorder( // شكل الزر (حواف مستديرة)
-                  //                     borderRadius: BorderRadius.circular(30), // تحديد نصف قطر الزوايا
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         )
-                  //
-                  //       ],
-                  //     )
-                  // ),
-                  // Container(
-                  //     margin:const EdgeInsets.all(10),
-                  //     padding: EdgeInsets.all(15),
-                  //     width: size.width,
-                  //     height: size.height/3,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.all(Radius.circular(15)),
-                  //       color: Colors.white,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.5),  // لون الظل
-                  //           spreadRadius: 0.2,                       // انتشار الظل
-                  //           blurRadius: 6,                         // مقدار الضبابية
-                  //           offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     child:Column(
-                  //       children: [
-                  //         // image and icon container
-                  //         Container(
-                  //           height:80,
-                  //           child:  Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Container(
-                  //                 width: size.width/2,
-                  //                 height: size.height,
-                  //                 child: Row(
-                  //                   children: [
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(left: 10),
-                  //                       width: 60,
-                  //                       height: 60,
-                  //                       decoration: const BoxDecoration(
-                  //                           shape: BoxShape.circle,
-                  //                           // color: Colors.grey,
-                  //                           image: DecorationImage(image: AssetImage('assets/ahmed.png'),
-                  //                             fit: BoxFit.cover,
-                  //                           )
-                  //                       ),
-                  //                     ),
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(top: 18,left: 5),
-                  //                       child:const Column(
-                  //                         children: [
-                  //                           Text('Ahmed Qahtan',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15),),
-                  //                           Text('Flutter Developer',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12),),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               IconButton(
-                  //                   onPressed: (){},
-                  //                   color: Colors.grey,
-                  //                   icon:const Icon(Icons.add_circle)),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         const SizedBox(height: 5,),
-                  //
-                  //         Container(
-                  //           // color: Colors.red,
-                  //           child:const Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Text('create flutter application', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //               Text('posted 1 hour ago',
-                  //                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.w700,color: Colors.grey),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         // review container
-                  //         SizedBox(
-                  //           child: Row(
-                  //             children: [
-                  //               IconButton(
-                  //                 onPressed:(){},
-                  //                 icon:const Icon(Icons.star),color: Colors.yellow,),
-                  //               const Text('4.5 review', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         const SizedBox(height: 40,),
-                  //         Container(
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               const SizedBox(
-                  //                 child: Column(
-                  //                   crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     Text('500 RS' ,style:TextStyle(fontWeight: FontWeight.w700)),
-                  //                     Text('to one project',style:TextStyle(color: Colors.grey)),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               ElevatedButton(
-                  //                 onPressed: (){},
-                  //                 child: Text('Show details',style:TextStyle(color: Colors.white)),
-                  //                 style: ElevatedButton.styleFrom(
-                  //                   backgroundColor: Colors.blue[300],
-                  //                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // التحكم في المسافات الداخلية (حجم الزر)
-                  //
-                  //                   shape: RoundedRectangleBorder( // شكل الزر (حواف مستديرة)
-                  //                     borderRadius: BorderRadius.circular(30), // تحديد نصف قطر الزوايا
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         )
-                  //
-                  //       ],
-                  //     )
-                  // ),
-                  // Container(
-                  //     margin:const EdgeInsets.all(10),
-                  //     padding: EdgeInsets.all(15),
-                  //     width: size.width,
-                  //     height: size.height/3,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.all(Radius.circular(15)),
-                  //       color: Colors.white,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.5),  // لون الظل
-                  //           spreadRadius: 0.2,                       // انتشار الظل
-                  //           blurRadius: 6,                         // مقدار الضبابية
-                  //           offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     child:Column(
-                  //       children: [
-                  //         // image and icon container
-                  //         Container(
-                  //           height:80,
-                  //           child:  Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Container(
-                  //                 width: size.width/2,
-                  //                 height: size.height,
-                  //                 child: Row(
-                  //                   children: [
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(left: 10),
-                  //                       width: 60,
-                  //                       height: 60,
-                  //                       decoration: const BoxDecoration(
-                  //                           shape: BoxShape.circle,
-                  //                           // color: Colors.grey,
-                  //                           image: DecorationImage(image: AssetImage('assets/ahmed.png'),
-                  //                             fit: BoxFit.cover,
-                  //                           )
-                  //                       ),
-                  //                     ),
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(top: 18,left: 5),
-                  //                       child:const Column(
-                  //                         children: [
-                  //                           Text('Ahmed Qahtan',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15),),
-                  //                           Text('Flutter Developer',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12),),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               IconButton(
-                  //                   onPressed: (){},
-                  //                   color: Colors.grey,
-                  //                   icon:const Icon(Icons.add_circle)),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         const SizedBox(height: 5,),
-                  //
-                  //         Container(
-                  //           // color: Colors.red,
-                  //           child:const Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Text('create flutter application', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //               Text('posted 1 hour ago',
-                  //                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.w700,color: Colors.grey),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         // review container
-                  //         SizedBox(
-                  //           child: Row(
-                  //             children: [
-                  //               IconButton(
-                  //                 onPressed:(){},
-                  //                 icon:const Icon(Icons.star),color: Colors.yellow,),
-                  //               const Text('4.5 review', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         const SizedBox(height: 40,),
-                  //         Container(
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               const SizedBox(
-                  //                 child: Column(
-                  //                   crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     Text('500 RS' ,style:TextStyle(fontWeight: FontWeight.w700)),
-                  //                     Text('to one project',style:TextStyle(color: Colors.grey)),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               ElevatedButton(
-                  //                 onPressed: (){},
-                  //                 child: Text('Show details',style:TextStyle(color: Colors.white)),
-                  //                 style: ElevatedButton.styleFrom(
-                  //                   backgroundColor: Colors.blue[300],
-                  //                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // التحكم في المسافات الداخلية (حجم الزر)
-                  //
-                  //                   shape: RoundedRectangleBorder( // شكل الزر (حواف مستديرة)
-                  //                     borderRadius: BorderRadius.circular(30), // تحديد نصف قطر الزوايا
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         )
-                  //
-                  //       ],
-                  //     )
-                  // ),
-                  // Container(
-                  //     margin:const EdgeInsets.all(10),
-                  //     padding: EdgeInsets.all(15),
-                  //     width: size.width,
-                  //     height: size.height/3,
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.all(Radius.circular(15)),
-                  //       color: Colors.white,
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.5),  // لون الظل
-                  //           spreadRadius: 0.2,                       // انتشار الظل
-                  //           blurRadius: 6,                         // مقدار الضبابية
-                  //           offset:const Offset(0, 0),                  // إزاحة الظل (x, y)
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     child:Column(
-                  //       children: [
-                  //         // image and icon container
-                  //         Container(
-                  //           height:80,
-                  //           child:  Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Container(
-                  //                 width: size.width/2,
-                  //                 height: size.height,
-                  //                 child: Row(
-                  //                   children: [
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(left: 10),
-                  //                       width: 60,
-                  //                       height: 60,
-                  //                       decoration: const BoxDecoration(
-                  //                           shape: BoxShape.circle,
-                  //                           // color: Colors.grey,
-                  //                           image: DecorationImage(image: AssetImage('assets/ahmed.png'),
-                  //                             fit: BoxFit.cover,
-                  //                           )
-                  //                       ),
-                  //                     ),
-                  //                     Container(
-                  //                       margin: const EdgeInsets.only(top: 18,left: 5),
-                  //                       child:const Column(
-                  //                         children: [
-                  //                           Text('Ahmed Qahtan',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 15),),
-                  //                           Text('Flutter Developer',
-                  //                             style: TextStyle(fontWeight: FontWeight.w700,fontSize: 12),),
-                  //                         ],
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               IconButton(
-                  //                   onPressed: (){},
-                  //                   color: Colors.grey,
-                  //                   icon:const Icon(Icons.add_circle)),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //         const SizedBox(height: 5,),
-                  //
-                  //         Container(
-                  //           // color: Colors.red,
-                  //           child:const Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Text('create flutter application', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //               Text('posted 1 hour ago',
-                  //                 style: TextStyle(fontSize: 10,fontWeight: FontWeight.w700,color: Colors.grey),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         // review container
-                  //         SizedBox(
-                  //           child: Row(
-                  //             children: [
-                  //               IconButton(
-                  //                 onPressed:(){},
-                  //                 icon:const Icon(Icons.star),color: Colors.yellow,),
-                  //               const Text('4.5 review', style: TextStyle(fontWeight: FontWeight.w700),),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //
-                  //         const SizedBox(height: 40,),
-                  //         Container(
-                  //           child: Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               const SizedBox(
-                  //                 child: Column(
-                  //                   crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     Text('500 RS' ,style:TextStyle(fontWeight: FontWeight.w700)),
-                  //                     Text('to one project',style:TextStyle(color: Colors.grey)),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //               ElevatedButton(
-                  //                 onPressed: (){},
-                  //                 child: Text('Show details',style:TextStyle(color: Colors.white)),
-                  //                 style: ElevatedButton.styleFrom(
-                  //                   backgroundColor: Colors.blue[300],
-                  //                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // التحكم في المسافات الداخلية (حجم الزر)
-                  //
-                  //                   shape: RoundedRectangleBorder( // شكل الزر (حواف مستديرة)
-                  //                     borderRadius: BorderRadius.circular(30), // تحديد نصف قطر الزوايا
-                  //                   ),
-                  //                 ),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         )
-                  //
-                  //       ],
-                  //     )
-                  // ),
+          ),
 
                 ],
               ),
-            )
-
-          ],
         ));
   }
 }

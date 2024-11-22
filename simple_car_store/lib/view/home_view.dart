@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/view/splash_view.dart';
 import '../custom_widget/container_card.dart';
+import '../model/cars_list_of_opject.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -13,6 +15,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  TextEditingController _searchController = TextEditingController();
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false); // حذف حالة تسجيل الدخول
@@ -28,16 +31,13 @@ class _HomeViewState extends State<HomeView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: TextFormField(
-          decoration: const InputDecoration(
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.grey,
-            ),
-            filled: true,
-            hintText: "Search ..",
-          ),
+        title: CustomTextFormField(
+            textController: _searchController,
+            textInputType: TextInputType.text,
+          prefixIcon: const Icon(Icons.search),
+          hintText: "Search ..",
         ),
+
         actions: [
           Padding(
             padding:const EdgeInsets.only(right: 10),
@@ -90,10 +90,12 @@ class _HomeViewState extends State<HomeView> {
                     crossAxisCount: 2, mainAxisExtent: 250.0),
                 itemCount: ImageAssets.carimage.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final car = carDetails[index];
                   return ContainerCarCard(
+                    isFavorite: false,
                     img: ImageAssets.carimage[index],
-                    name: 'Land Rover',
-                    price: 2000.0,
+                    name: car["model"],
+                    price: "18,500",
                   );
                 },
               ),

@@ -4,11 +4,12 @@ import '../view/details_view.dart';
 
 class ContainerCarCard extends StatefulWidget {
   String? img;
-  String? name;
+  Map<String,dynamic>? carDetails;
   String? price;
   bool? isFavorite;
 
-  ContainerCarCard({super.key, required this.img ,required this.name, required this.price,required this.isFavorite});
+
+  ContainerCarCard({super.key, required this.img ,required this.carDetails, required this.price,required this.isFavorite});
 
   @override
   State<ContainerCarCard> createState() => _ContainerCarCardState();
@@ -19,7 +20,7 @@ class _ContainerCarCardState extends State<ContainerCarCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailsView.details(img: widget.img, name: widget.name, price: widget.price,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> DetailsView.details(img: widget.img, carDetails: widget.carDetails, price: widget.price,)));
       },
       child: Container(
           margin:const EdgeInsets.all(10),
@@ -55,8 +56,8 @@ class _ContainerCarCardState extends State<ContainerCarCard> {
               ),
 
               const SizedBox(height: 120,),
-              Text(widget.name!),
-              Text("${widget.price!}"),
+              Text(widget.carDetails?["model"]),
+              Text("\$ ${widget.price!}"),
             ],
           )
       ),

@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import '../resources/color_manager.dart';
+import 'wallet_view.dart';
 
 class DetailsView extends StatefulWidget {
   String? img;
-  String? name;
+  Map<String,dynamic>? carDetails;
   String? price;
 
   DetailsView({super.key});
 
   DetailsView.details(
-      {super.key, required this.img, required this.name, required this.price});
+      {super.key, required this.img, required this.carDetails, required this.price});
 
   @override
   State<DetailsView> createState() => _DetailsViewState();
@@ -64,7 +65,7 @@ class _DetailsViewState extends State<DetailsView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                      Text(widget.name!,style: const TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s30),),
+                      Text(widget.carDetails?["model"],style: const TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s30),),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -82,9 +83,14 @@ class _DetailsViewState extends State<DetailsView> {
                   ),
 
                  // details text
-                 const Padding(
-                      padding:  EdgeInsets.only(top: 10,left: 15,right: 15),
-                    child: Text("Jeep Rubicon Off-road Petrol V6 Jeep Rubicon Off-road Petrol V6"),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 10,left: 15,right: 15),
+                    // child: Text("Jeep Rubicon Off-road Petrol V6 Jeep Rubicon Off-road Petrol V6"),
+                    child: Text(""
+                        "${widget.carDetails?["brand"]} "
+                        "${widget.carDetails?["model"]} "
+                        "${widget.carDetails?["type"]} "
+                        "(${widget.carDetails?["fuelType"]}) "),
                   ),
 
                   // Features container
@@ -120,14 +126,14 @@ class _DetailsViewState extends State<DetailsView> {
                                 ),
                                 width: size.width/4,
                                 height: size.height/5.5,
-                                padding: EdgeInsets.only(left: 6),
-                                child: const Column(
+                                padding: const EdgeInsets.only(left: 6),
+                                child:  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Icon(Icons.airline_seat_recline_extra_sharp),
-                                    Text("Total Capacity"),
-                                    Text("4 seats",style:TextStyle(fontWeight: FontWeight.bold),)
+                                    const Icon(Icons.airline_seat_recline_extra_sharp),
+                                    const Text("Total Capacity"),
+                                    Text("${widget.carDetails?["seatingCapacity"]} seat",style:const TextStyle(fontWeight: FontWeight.bold),)
                                   ],
                                 ),
                               ),
@@ -146,14 +152,14 @@ class _DetailsViewState extends State<DetailsView> {
                                 ),
                                 width: size.width/4,
                                 height: size.height/5.5,
-                                padding: EdgeInsets.only(left: 6),
-                                child: const Column(
+                                padding: const EdgeInsets.only(left: 6),
+                                child:  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Icon(Icons.speed),
-                                    Text("Highest speed"),
-                                    Text("200 KM/H",style:TextStyle(fontWeight: FontWeight.bold),)
+                                    const Icon(Icons.speed),
+                                    const Text("Highest speed"),
+                                    Text("${widget.carDetails?["maxSpeed"]} KM/H",style:const TextStyle(fontWeight: FontWeight.bold),)
                                   ],
                                 ),
                               ),
@@ -172,19 +178,18 @@ class _DetailsViewState extends State<DetailsView> {
                                 ),
                                 width: size.width/4,
                                 height: size.height/5.5,
-                                padding: EdgeInsets.only(left: 6),
-                                child: const Column(
+                                padding: const EdgeInsets.only(left: 6),
+                                child:  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    Icon(Icons.directions_car_filled),
-                                    Text("Engine output"),
-                                    Text("500 HP",style:TextStyle(fontWeight: FontWeight.bold),)
+                                    const Icon(Icons.directions_car_filled),
+                                    const Text("Engine "),
+                                    Text("${widget.carDetails?["engine"]}",style:const TextStyle(fontWeight: FontWeight.bold),)
                                   ],
                                 ),
                               ),
                             ],
-
                           )
                         )
                       ],
@@ -207,7 +212,7 @@ class _DetailsViewState extends State<DetailsView> {
                           child: const Column(
                             children: [
                               Text("price",style: TextStyle(fontWeight: FontWeighManager.bold,)),
-                              Text("18,500",style: TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s20)),
+                              Text("\$18,500",style: TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s20)),
                             ],
                           ),
                         ),
@@ -220,6 +225,8 @@ class _DetailsViewState extends State<DetailsView> {
                           // margin: const EdgeInsets.only(left: 20,right: 20),
                           child: ElevatedButton(
                             onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>WalletView()));
+
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: ColorsManager.primary,

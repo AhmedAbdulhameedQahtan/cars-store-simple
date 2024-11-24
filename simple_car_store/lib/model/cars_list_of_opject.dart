@@ -9,6 +9,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 5,
     "engine": "V6",
     "fuelType": "Petrol",
+    "maxSpeed": 180
   },
   {
     "brand": "BMW",
@@ -20,6 +21,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 4,
     "engine": "Inline-6",
     "fuelType": "Petrol",
+    "maxSpeed": 250
   },
   {
     "brand": "Mercedes-Benz",
@@ -31,6 +33,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 4,
     "engine": "V8",
     "fuelType": "Petrol",
+    "maxSpeed": 280
   },
   {
     "brand": "Jeep",
@@ -42,6 +45,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 5,
     "engine": "V6",
     "fuelType": "Petrol",
+    "maxSpeed": 180
   },
   {
     "brand": "BMW",
@@ -53,6 +57,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 4,
     "engine": "Inline-6",
     "fuelType": "Petrol",
+    "maxSpeed": 250
   },
   {
     "brand": "Mercedes-Benz",
@@ -64,6 +69,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 4,
     "engine": "V8",
     "fuelType": "Petrol",
+    "maxSpeed": 280
   },
   {
     "brand": "Jeep",
@@ -75,6 +81,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 5,
     "engine": "V6",
     "fuelType": "Petrol",
+    "maxSpeed": 180
   },
   {
     "brand": "BMW",
@@ -86,6 +93,7 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 4,
     "engine": "Inline-6",
     "fuelType": "Petrol",
+    "maxSpeed": 250
   },
   {
     "brand": "Mercedes-Benz",
@@ -97,5 +105,6 @@ final List<Map<String, dynamic>> carDetails = [
     "seatingCapacity": 4,
     "engine": "V8",
     "fuelType": "Petrol",
+    "maxSpeed": 280
   },
 ];

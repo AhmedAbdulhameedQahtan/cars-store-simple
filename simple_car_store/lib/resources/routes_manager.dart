@@ -6,7 +6,7 @@ import '../view/details_view.dart';
 import '../view/forgotpassword_view.dart';
 import '../view/home_view.dart';
 import '../view/login_view.dart';
-import '../view/onboarding_view.dart';
+import '../view/wallet_view.dart';
 import '../view/register_view.dart';
 import '../view/splash_view.dart';
 
@@ -36,8 +36,8 @@ class RoutGenerator{
         return MaterialPageRoute(builder: (_)=>const HomeView());
       case Routes.detailsRoute:
         return MaterialPageRoute(builder: (_)=> DetailsView());
-      case Routes.noBoardingRoute:
-        return MaterialPageRoute(builder: (_)=>const OnBoardingView());
+      // case Routes.noBoardingRoute:
+      //   return MaterialPageRoute(builder: (_)=>const OnBoardingView());
       default:
         return  unDefinedRoute();
     }

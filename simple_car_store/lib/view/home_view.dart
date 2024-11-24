@@ -91,10 +91,11 @@ class _HomeViewState extends State<HomeView> {
                 itemCount: ImageAssets.carimage.length,
                 itemBuilder: (BuildContext context, int index) {
                   final car = carDetails[index];
+                  print("$index=============$car");
                   return ContainerCarCard(
                     isFavorite: false,
                     img: ImageAssets.carimage[index],
-                    name: car["model"],
+                    carDetails: car,
                     price: "18,500",
                   );
                 },

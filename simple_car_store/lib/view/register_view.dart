@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/view/login_view.dart';
 import '../resources/assets_manager.dart';
 import '../resources/font_manager.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -14,6 +16,8 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -22,6 +26,12 @@ class _RegisterViewState extends State<RegisterView> {
   bool obscurePasswordText = true;
   bool obscureConfirmText = true;
   bool checkBoxState = false;
+  String? myToken = "";
+
+  getToken() async {
+    myToken = await _fcm.getToken();
+    print("mytoken =============$myToken");
+  }
 
   bool isEmailValid(String email) {
     String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
@@ -72,7 +82,16 @@ class _RegisterViewState extends State<RegisterView> {
       if ((confirmPassword == password) && (checkBoxState == true)) {
         var result = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+
+        if(result!=null){
+          _db.collection('users').doc(result.user!.uid,).set({
+            'email':result.user!.email,
+            'password':result.user!.uid,
+            'token':myToken,
+          });
+        }
         // الانتقال إلى الصفحة التالية بعد انشاء الحساب بنجاح
+
         print("تم انشاء الحساب بنجاح$result!");
         Navigator.pushReplacement(
           context,
@@ -147,6 +166,13 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getToken();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -212,7 +238,7 @@ class _RegisterViewState extends State<RegisterView> {
               CustomTextFormField(
                 textController: _passwordController,
                 textInputType: TextInputType.visiblePassword,
-                prefixIcon:const  Icon(Icons.lock),
+                prefixIcon: const Icon(Icons.lock),
                 hintText: "Password",
                 obscureText: true,
               ),
@@ -225,11 +251,10 @@ class _RegisterViewState extends State<RegisterView> {
               CustomTextFormField(
                 textController: _confirmController,
                 textInputType: TextInputType.visiblePassword,
-                prefixIcon:const  Icon(Icons.lock),
+                prefixIcon: const Icon(Icons.lock),
                 hintText: "confirm Password",
                 obscureText: true,
               ),
-
 
               const SizedBox(
                 height: 5,

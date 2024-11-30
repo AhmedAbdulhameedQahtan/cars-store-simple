@@ -9,7 +9,7 @@ import '../model/firbase_auth.dart';
 import '../resources/color_manager.dart';
 import '../resources/constant_manager.dart';
 import '../resources/routes_manager.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -19,6 +19,7 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  // final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   Timer? _timer;
 
   _startDelay(){
@@ -54,6 +55,9 @@ class _SplashViewState extends State<SplashView> {
     // TODO: implement initState
     super.initState();
       // _startDelay();
+    // _fcm.getToken().then((token) {
+    //   print("Device Token=====: $token");
+    // });
   }
   @override
   Widget build(BuildContext context) {

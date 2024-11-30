@@ -83,7 +83,6 @@ class _LoginViewState extends State<LoginView> {
       var result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       // الانتقال إلى الصفحة التالية بعد تسجيل الدخول بنجاح
-      print("تم تسجيل الدخول بنجاح$result!");
 
       if (result != null) {
         if (checkBoxState) {

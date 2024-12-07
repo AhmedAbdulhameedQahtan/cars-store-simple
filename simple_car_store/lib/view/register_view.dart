@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
@@ -18,7 +17,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  // final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -29,10 +28,10 @@ class _RegisterViewState extends State<RegisterView> {
   bool checkBoxState = false;
   String? myToken = "";
 
-  getToken() async {
-    myToken = await _fcm.getToken();
-    print("mytoken =============$myToken");
-  }
+  // getToken() async {
+  //   myToken = await _fcm.getToken();
+  //   print("mytoken =============$myToken");
+  // }
 
   bool isEmailValid(String email) {
     String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
@@ -59,35 +58,7 @@ class _RegisterViewState extends State<RegisterView> {
 
     if (!isEmailValid(email)) {
       // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("False Emeil",
-                style: TextStyle(
-                  color: ColorsManager.error,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            content: Text("write real email",
-                style: TextStyle(
-                  color: ColorsManager.black,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            actions: [
-              TextButton(
-                child: Text("ok",
-                    style: TextStyle(
-                      color: ColorsManager.primary,
-                      fontWeight: FontWeighManager.bold,
-                    )),
-                onPressed: () {
-                  Navigator.of(context).pop(); // إغلاق التنبيه
-                },
-              ),
-            ],
-          );
-        },
-      );
+      onGeneralError('write real email');
       return;
     }
 
@@ -138,7 +109,6 @@ class _RegisterViewState extends State<RegisterView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getToken();
   }
 
   @override

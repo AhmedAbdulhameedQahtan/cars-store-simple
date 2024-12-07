@@ -1,4 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
@@ -17,6 +19,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   TextEditingController _searchController = TextEditingController();
 
+
   Future<void> _logout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
@@ -31,6 +34,37 @@ class _HomeViewState extends State<HomeView> {
     //   MaterialPageRoute(builder: (context) => const SplashView()),
     // );
 
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.error,
+      //   animType: AnimType.rightSlide,
+      //   title: message.notification?.title,
+      //   desc: message.notification?.body,
+      //   btnOkOnPress: () {},
+      // ).show();
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.noHeader,
+          animType: AnimType.rightSlide,
+          title: message.notification?.title,
+          desc: message.notification?.body,
+          btnOkOnPress: () {},
+        ).show();
+
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -100,7 +134,6 @@ class _HomeViewState extends State<HomeView> {
                 itemCount: ImageAssets.carimage.length,
                 itemBuilder: (BuildContext context, int index) {
                   final car = carDetails[index];
-                  print("$index=============$car");
                   return ContainerCarCard(
                     isFavorite: false,
                     img: ImageAssets.carimage[index],

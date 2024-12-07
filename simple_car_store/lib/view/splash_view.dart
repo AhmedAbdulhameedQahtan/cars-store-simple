@@ -67,11 +67,11 @@ class _SplashViewState extends State<SplashView> {
     //   print("Device Token=====: $token");
     // });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('=============================== Notification ===============================');
-      print("${message.notification?.title}");
-      print("${message.notification?.body}");
-    });
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print('=============================== Notification ===============================');
+    //   print("${message.notification?.title}");
+    //   print("${message.notification?.body}");
+    // });
 
   }
   @override

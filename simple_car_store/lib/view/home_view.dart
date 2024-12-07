@@ -6,7 +6,9 @@ import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/view/splash_view.dart';
+import '../controller/appLocalization.dart';
 import '../custom_widget/container_card.dart';
+import '../main.dart';
 import '../model/cars_list_of_opject.dart';
 
 class HomeView extends StatefulWidget {
@@ -40,14 +42,6 @@ class _HomeViewState extends State<HomeView> {
     // TODO: implement initState
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // AwesomeDialog(
-      //   context: context,
-      //   dialogType: DialogType.error,
-      //   animType: AnimType.rightSlide,
-      //   title: message.notification?.title,
-      //   desc: message.notification?.body,
-      //   btnOkOnPress: () {},
-      // ).show();
       print('Got a message whilst in the foreground!');
       print('Message data: ${message.data}');
 
@@ -72,12 +66,28 @@ class _HomeViewState extends State<HomeView> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            const SizedBox(height: 50,),
+            ElevatedButton(onPressed: (){
+              Locale newLocale =
+              Localizations.localeOf(context).languageCode == 'en'
+                  ? const Locale('ar')
+                  : const Locale('en');
+              MyApp.setLocale(context, newLocale);
+            }, child: const Text('change language'),
+      )
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: CustomTextFormField(
             textController: _searchController,
             textInputType: TextInputType.text,
           prefixIcon: const Icon(Icons.search),
-          hintText: "Search ..",
+          hintText:AppLocalizations.of(context)!.translate('search') ?? '',
+
         ),
 
         actions: [
@@ -104,15 +114,20 @@ class _HomeViewState extends State<HomeView> {
               width: size.width,
               height: 30,
               padding: const EdgeInsets.only(left: 10, right: 10),
-              child: const Row(
+              child:  Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Popular Car',
-                    style: TextStyle(fontWeight: FontWeight.w700),
+                    // 'Popular Car',
+                    AppLocalizations.of(context)!.translate('popular_car') ?? '',
+
+                    style: const TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  Text('Show more',
-                      style: TextStyle(
+                  Text(
+                      // 'Show more',
+                      AppLocalizations.of(context)!.translate('show_more') ?? '',
+
+                      style: const TextStyle(
                           fontWeight: FontWeight.w700, color: Colors.grey))
                 ],
               ),

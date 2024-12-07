@@ -5,6 +5,8 @@ import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import 'package:simple_car_store/resources/values_manager.dart';
 import 'package:simple_car_store/view/home_view.dart';
+import '../controller/appLocalization.dart';
+import '../main.dart';
 import '../model/firbase_auth.dart';
 import '../resources/color_manager.dart';
 import '../resources/constant_manager.dart';
@@ -94,7 +96,9 @@ class _SplashViewState extends State<SplashView> {
             Container(
               padding: const EdgeInsets.all(5),
               margin: const EdgeInsets.all(10),
-              child: Text("Easy way to buy your dream car",
+              child: Text(
+                  // "Easy way to buy your dream car",
+                  AppLocalizations.of(context)!.translate('title') ?? '',
                 style: TextStyle(
                     color: ColorsManager.primary,
                     fontSize: FontSize.s35,
@@ -126,6 +130,12 @@ class _SplashViewState extends State<SplashView> {
                   var user = FirebaseAuth.instance.currentUser;
                   (user == null) ? isLoggedIn = false : isLoggedIn = true ;
                   _checkLoginStatus();
+                  // تغيير اللغة عند الضغط
+                  // Locale newLocale =
+                  // Localizations.localeOf(context).languageCode == 'en'
+                  //     ? const Locale('ar')
+                  //     : const Locale('en');
+                  // MyApp.setLocale(context, newLocale);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ColorsManager.primary,

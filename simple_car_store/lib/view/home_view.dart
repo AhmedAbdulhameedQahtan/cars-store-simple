@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
@@ -16,13 +16,21 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   TextEditingController _searchController = TextEditingController();
+
   Future<void> _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false); // حذف حالة تسجيل الدخول
+    await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => const SplashView()),
     );
+    // هذا الطريقه باستخدام ذاكره التخزين
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setBool('isLoggedIn', false); // حذف حالة تسجيل الدخول
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const SplashView()),
+    // );
+
   }
 
   @override
@@ -43,6 +51,7 @@ class _HomeViewState extends State<HomeView> {
             padding:const EdgeInsets.only(right: 10),
             child: IconButton(
                 onPressed: (){
+
                    _logout(context);
                   },
                 icon: const Icon(Icons.logout,size: 25,),

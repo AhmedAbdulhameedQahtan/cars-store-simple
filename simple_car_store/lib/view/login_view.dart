@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
@@ -8,6 +9,9 @@ import 'package:simple_car_store/view/register_view.dart';
 import '../resources/assets_manager.dart';
 import '../resources/values_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -19,6 +23,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   
   final _formKey = GlobalKey<FormState>();
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -26,11 +32,12 @@ class _LoginViewState extends State<LoginView> {
   String errorMessage = "";
   bool checkBoxState = false;
   bool obscureText = true;
+  String? myToken = "";
 
-  Future<void> _login(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', true); // حفظ حالة تسجيل الدخول
-  }
+  // Future<void> _login(BuildContext context) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setBool('isLoggedIn', true); // حفظ حالة تسجيل الدخول
+  // }
 
   // تحقق من صحة تنسيق البريد الإلكتروني
   bool isEmailValid(String email) {
@@ -39,101 +46,99 @@ class _LoginViewState extends State<LoginView> {
     return regExp.hasMatch(email);
   }
 
-  Future<void> signIn() async {
+  getToken() async {
+    myToken = await _fcm.getToken();
+    print("mytoken =============$myToken");
+  }
 
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
+  void onAuthError(String errorCode, String? message) {
+    // عرض حوار الخطأ
+    String? title;
+    String? desc;
+
+    if (errorCode == 'user-not-found') {
+      title = 'User Not Found';
+      desc = 'No user found for that email.';
+    } else if (errorCode == 'wrong-password') {
+      title = 'Wrong Password';
+      desc = 'The password is incorrect.';
+    } else if (errorCode == 'invalid-credential'){
+      title = 'Invalid Credential';
+      desc = 'The email or password is incorrect. Please try again.';
+    }
+    print("=====title======$title====================");
+    print("==desc=========$desc====================");
+
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.error,
+      animType: AnimType.rightSlide,
+      title: title,
+      desc: desc,
+      btnOkOnPress: () {},
+    ).show();
+  }
+
+  void onGeneralError(String errorMessage) {
+    // عرض حوار لأي خطأ عام
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.error,
+      animType: AnimType.rightSlide,
+      title: 'Error',
+      desc: errorMessage,
+      btnOkOnPress: () {},
+    ).show();
+  }
+
+
+  Future<void> signIn( email,password) async {
 
     if (!isEmailValid(email)) {
-
       // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("False Emeil",
-                style: TextStyle(
-                  color: ColorsManager.error,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            content: Text("write real email",
-                style: TextStyle(
-                  color: ColorsManager.black,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            actions: [
-              TextButton(
-                child: Text("ok",
-                    style: TextStyle(
-                      color: ColorsManager.primary,
-                      fontWeight: FontWeighManager.bold,
-                    )),
-                onPressed: () {
-                  Navigator.of(context).pop(); // إغلاق التنبيه
-                },
-              ),
-            ],
-          );
-        },
-      );
+      AwesomeDialog(
+          context: context,
+          dialogType: DialogType.info,
+          animType: AnimType.rightSlide,
+          title: 'False Email',
+          desc: 'Write correct email',
+          btnCancelOnPress: () {},
+          btnOkOnPress: () {},
+    ).show();
       return;
-    }
+    }else{
 
     try {
-      var result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      var result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       // الانتقال إلى الصفحة التالية بعد تسجيل الدخول بنجاح
 
-      if (result != null) {
-        if (checkBoxState) {
-          _login(context);
+      if ((result != null) ) {
+        if (checkBoxState != true) {
+          // حفظ الحاله
+          _auth.signOut();
+          print("===================state log oyt ===============");
         }
+          _db.collection('users').doc(result.user!.uid,).update({'token':myToken,});
         Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomeView()),);
       }
-    } catch (e) {
-      setState(() {
-        errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
-      });
+    } on FirebaseAuthException catch (e) {
+      onAuthError(e.code,e.message);
+    }catch (e) {
 
       // عرض رسالة منبثقة عند حدوث خطأ أثناء تسجيل الدخول
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error login",
-                style: TextStyle(
-                  color: ColorsManager.error,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            content: Text("false email or password",
-                style: TextStyle(
-                  color: ColorsManager.black,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            actions: [
-              TextButton(
-                child: Text("ok",
-                    style: TextStyle(
-                      color: ColorsManager.primary,
-                      fontWeight: FontWeighManager.bold,
-                    )),
-                onPressed: () {
-                  Navigator.of(context).pop(); // إغلاق التنبيه
-                },
-              ),
-            ],
-          );
-        },
-      );
+      onGeneralError(e.toString());
 
       print("حدث خطأ أثناء تسجيل الدخول: $e");
     }
-  }
+    }
+    }
+
 
 
   @override
   void initState() {
     // TODO: implement initState
+    getToken();
     super.initState();
   }
 
@@ -264,9 +269,9 @@ class _LoginViewState extends State<LoginView> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      setState(() {
-                        signIn();
-                      });
+                      // setState(() {
+                        signIn(_emailController.text.trim(),_passwordController.text.trim());
+                      // });
                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const HomeView()));
                     }
                   },
@@ -343,7 +348,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const RegisterView()));

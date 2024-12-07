@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import 'package:simple_car_store/resources/values_manager.dart';
@@ -19,8 +19,9 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  // final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   Timer? _timer;
+  bool? isLoggedIn;
 
   _startDelay(){
     _timer = Timer(const Duration(seconds: AppConstant.splashDuration), _goNext);
@@ -31,22 +32,29 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> _checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
-    if (isLoggedIn) {
-      // الانتقال إلى الشاشة الرئيسية إذا كان المستخدم مسجل الدخول
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) =>const HomeView()),
-      );
-    } else {
-      // الانتقال إلى شاشة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) =>  NetworkChecker()),
-      );
-    }
+    isLoggedIn == false ?
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>  NetworkChecker())):
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomeView()));
+
+    // هذه الطريقه عن طريق التخزين في ذاكرة الداتا
+
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    // if (isLoggedIn) {
+    //   // الانتقال إلى الشاشة الرئيسية إذا كان المستخدم مسجل الدخول
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) =>const HomeView()),
+    //   );
+    // } else {
+    //   // الانتقال إلى شاشة تسجيل الدخول إذا لم يكن المستخدم مسجل الدخول
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (context) =>  NetworkChecker()),
+    //   );
+    // }
   }
 
 
@@ -58,6 +66,13 @@ class _SplashViewState extends State<SplashView> {
     // _fcm.getToken().then((token) {
     //   print("Device Token=====: $token");
     // });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('=============================== Notification ===============================');
+      print("${message.notification?.title}");
+      print("${message.notification?.body}");
+    });
+
   }
   @override
   Widget build(BuildContext context) {
@@ -108,6 +123,8 @@ class _SplashViewState extends State<SplashView> {
               margin: const EdgeInsets.only(left: 20,right: 20,top: 50),
               child: ElevatedButton(
                 onPressed: (){
+                  var user = FirebaseAuth.instance.currentUser;
+                  (user == null) ? isLoggedIn = false : isLoggedIn = true ;
                   _checkLoginStatus();
                 },
                 style: ElevatedButton.styleFrom(

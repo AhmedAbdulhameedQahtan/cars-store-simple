@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,18 @@ class _RegisterViewState extends State<RegisterView> {
     String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
     RegExp regExp = RegExp(emailPattern);
     return regExp.hasMatch(email);
+  }
+
+  void onGeneralError(String errorMessage) {
+    // عرض رسالة لأي خطأ عام
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.error,
+      animType: AnimType.rightSlide,
+      title: 'Error',
+      desc: errorMessage,
+      btnOkOnPress: () {},
+    ).show();
   }
 
   Future<void> createAccount() async {
@@ -83,7 +96,11 @@ class _RegisterViewState extends State<RegisterView> {
         var result = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
-        if(result!=null){
+        await _auth.setLanguageCode("ar");
+        await _auth.currentUser?.sendEmailVerification();
+
+
+        if((result!=null)){
           _db.collection('users').doc(result.user!.uid,).set({
             'email':result.user!.email,
             'password':result.user!.uid,
@@ -99,68 +116,20 @@ class _RegisterViewState extends State<RegisterView> {
         );
       } else {
         // في حال لم يتطابق كلمة المرور مع تحقق كلمة المرور
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Error confirm password",
-                  style: TextStyle(
-                    color: ColorsManager.error,
-                    fontWeight: FontWeighManager.bold,
-                  )),
-              content: Text("check the password and confirm password",
-                  style: TextStyle(
-                    color: ColorsManager.black,
-                    fontWeight: FontWeighManager.bold,
-                  )),
-              actions: [
-                TextButton(
-                  child: Text("ok",
-                      style: TextStyle(
-                        color: ColorsManager.primary,
-                        fontWeight: FontWeighManager.bold,
-                      )),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // إغلاق التنبيه
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        onGeneralError('check the password and confirm password');
       }
-    } catch (e) {
+    }on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        onGeneralError('The password provided is too weak.');
+        print('');
+      } else if (e.code == 'email-already-in-use') {
+        onGeneralError('The account already exists for that email.');
+        print('The account already exists for that email.');
+      }
+    }
+    catch (e) {
       // عرض رسالة منبثقة عند حدوث خطأ أثناء انشاء الحساب
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Error create an account",
-                style: TextStyle(
-                  color: ColorsManager.error,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            content: Text("false email or password",
-                style: TextStyle(
-                  color: ColorsManager.black,
-                  fontWeight: FontWeighManager.bold,
-                )),
-            actions: [
-              TextButton(
-                child: Text("ok",
-                    style: TextStyle(
-                      color: ColorsManager.primary,
-                      fontWeight: FontWeighManager.bold,
-                    )),
-                onPressed: () {
-                  Navigator.of(context).pop(); // إغلاق التنبيه
-                },
-              ),
-            ],
-          );
-        },
-      );
-
+      onGeneralError(e.toString());
       print("حدث خطأ أثناء انشاء الحساب: $e");
     }
   }

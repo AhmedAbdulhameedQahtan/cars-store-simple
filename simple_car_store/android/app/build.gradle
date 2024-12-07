@@ -15,7 +15,7 @@ dependencies {
 android {
     namespace = "com.example.simple_car_store"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "25.1.8937393"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

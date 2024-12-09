@@ -27,7 +27,7 @@ class _ContainerCarCardState extends State<ContainerCarCard> {
           padding:const EdgeInsets.only(left: 5,top: 5),
           decoration: BoxDecoration(
             borderRadius:const BorderRadius.all(Radius.circular(15)),
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),  // لون الظل

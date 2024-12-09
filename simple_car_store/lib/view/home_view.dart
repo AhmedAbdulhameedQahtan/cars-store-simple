@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
+import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/view/splash_view.dart';
 import '../custom_widget/container_card.dart';
 import '../model/cars_list_of_opject.dart';
@@ -73,8 +74,8 @@ class _HomeViewState extends State<HomeView> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName: const Text("أحمد قحطان"),
-                accountEmail:  Text(user!),
+                accountName:  Text("أحمد قحطان",style: TextStyle(color: ColorsManager.white),),
+                accountEmail:  Text(user!,style: TextStyle(color: ColorsManager.white),),
                 currentAccountPicture: InkWell(
                   onTap: () {
                     // controller.pickImage(ImageSource.gallery);
@@ -112,8 +113,8 @@ class _HomeViewState extends State<HomeView> {
                   boxShadow: const [
                    BoxShadow(
                       color: Colors.black26,
-                      spreadRadius: 3,
-                      blurRadius: 7,
+                      // spreadRadius: 3,
+                      blurRadius: 8,
                       offset: Offset(0, 3), // يغير مكان الظل
                     ),
                   ],
@@ -122,7 +123,7 @@ class _HomeViewState extends State<HomeView> {
 
               ListTile(
                 leading: const Icon(Icons.language),
-                title:  Text('change_language'.tr()),
+                title:  Text('change_language'.tr(),style: Theme.of(context).textTheme.titleSmall,),
                 onTap: () {
                   context.locale.languageCode == 'en' ?
                   context.setLocale(const Locale('ar')) :
@@ -132,14 +133,14 @@ class _HomeViewState extends State<HomeView> {
 
               ListTile(
                 leading: const Icon(Icons.star),
-                title:  Text('favorite'.tr()),
+                title:  Text('favorite'.tr(),style: Theme.of(context).textTheme.titleSmall,),
                 onTap: () {
                 },
               ),
 
               ListTile(
                 leading: const Icon(Icons.category),
-                title:  Text('categories'.tr()),
+                title:  Text('categories'.tr(),style: Theme.of(context).textTheme.titleSmall,),
                 onTap: () {
                 },
               ),
@@ -148,21 +149,21 @@ class _HomeViewState extends State<HomeView> {
 
               ListTile(
                 leading: const Icon(Icons.settings),
-                title:  Text('setting'.tr()),
+                title:  Text('setting'.tr(),style: Theme.of(context).textTheme.titleSmall,),
                 onTap: () {
                 },
               ),
 
               ListTile(
                 leading: const Icon(Icons.question_mark),
-                title:  Text('about_app'.tr()),
+                title:  Text('about_app'.tr(),style: Theme.of(context).textTheme.titleSmall,),
                 onTap: () {
                 },
               ),
 
               ListTile(
                 leading: const Icon(Icons.logout),
-                title: Text('logout'.tr()),
+                title: Text('logout'.tr(),style: Theme.of(context).textTheme.titleSmall,),
                 onTap: () {
                   _logout(context);
                 },
@@ -184,7 +185,7 @@ class _HomeViewState extends State<HomeView> {
         body: Container(
           margin: const EdgeInsets.only(top: 10),
           height: size.height,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           child: ListView(
             children: [
               Container(
@@ -211,7 +212,7 @@ class _HomeViewState extends State<HomeView> {
                 width: size.width,
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    color: Colors.grey[50],
+                    color: Theme.of(context).colorScheme.onSurface,
                     borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10))),

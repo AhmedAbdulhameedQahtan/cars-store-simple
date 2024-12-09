@@ -82,9 +82,9 @@ class _SplashViewState extends State<SplashView> {
 
     return Scaffold(
       
-        appBar: null,
+        // appBar: null,
       
-        backgroundColor: ColorsManager.lightBlack,
+        backgroundColor:Theme.of(context).colorScheme.surface,
       
         body:Container(
       
@@ -97,13 +97,7 @@ class _SplashViewState extends State<SplashView> {
                 padding: const EdgeInsets.all(5),
                 margin: const EdgeInsets.all(10),
                 child: Text('title'.tr(),
-                    // AppLocalizations.of(context)!.translate('title') ?? '',
-                  style: TextStyle(
-                      color: ColorsManager.primary,
-                      fontSize: FontSize.s35,
-                      fontWeight: FontWeighManager.bold,
-                      fontFamily: 'orban'
-                  ),),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontFamily: 'orban', fontSize: FontSize.s35,),),
               ),
       
               const SizedBox(height: AppSize.s14,),

@@ -7,13 +7,22 @@ import 'font_manager.dart';
 class AppThemes {
   static final lightTheme = ThemeData(
     brightness: Brightness.light,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: ColorsManager.white,
+    colorScheme: const ColorScheme.light().copyWith(
+      surface: ColorsManager.white,
+      onSurface: ColorsManager.white,
+
+    ),
 
     //main colors theme
     primaryColor: ColorsManager.primary,
     disabledColor: ColorsManager.gray,
     splashColor: ColorsManager.lightprimary,
 
+    //drawer theam
+    drawerTheme: DrawerThemeData(
+        backgroundColor:ColorsManager.white
+    ),
     //cardview theme
     cardTheme: CardTheme(
       color: ColorsManager.white,
@@ -23,9 +32,7 @@ class AppThemes {
 
     //AppBar theme
     appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(
-            color: ColorsManager.white
-        ),
+        iconTheme: IconThemeData(color: ColorsManager.white),
         color: ColorsManager.primary,
         elevation: AppSize.s4,
         shadowColor: ColorsManager.lightprimary,
@@ -120,14 +127,24 @@ class AppThemes {
   );
 
   static final darkTheme = ThemeData(
+
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: ColorsManager.lightBlack,
+
+    colorScheme: const ColorScheme.dark().copyWith(
+      surface: ColorsManager.lightBlack,
+      onSurface: ColorsManager.gray,
+    ),
 
     //main colors theme
     primaryColor: ColorsManager.primary,
     disabledColor: ColorsManager.gray,
     splashColor: ColorsManager.lightprimary,
 
+    //drawer theam
+    drawerTheme: DrawerThemeData(
+        backgroundColor:ColorsManager.lightBlack
+    ),
     //cardview theme
     cardTheme: CardTheme(
       color: ColorsManager.white,
@@ -137,8 +154,9 @@ class AppThemes {
 
     //AppBar theme
     appBarTheme: AppBarTheme(
+        iconTheme:IconThemeData(color: ColorsManager.white),
         color: ColorsManager.primary,
-        elevation: AppSize.s4,
+        elevation: 0,
         shadowColor: ColorsManager.lightprimary,
         centerTitle: true,
         titleTextStyle: getRegularStyle(
@@ -172,10 +190,10 @@ class AppThemes {
       headlineMedium: getRegularStyle(color: ColorsManager.darkgray, fontSize: FontSize.s14,),
       titleLarge: getRegularStyle(color: ColorsManager.primary),
       titleMedium: getMedumStyle(color: ColorsManager.primary, fontSize: FontSize.s16),
-      titleSmall: getRegularStyle(color: ColorsManager.darkgray),
+      titleSmall: getRegularStyle(color: ColorsManager.white),
       bodyLarge: getRegularStyle(color: ColorsManager.lightgray),
       bodyMedium: getRegularStyle(color: ColorsManager.darkgray),
-      bodySmall: getRegularStyle(color: ColorsManager.darkgray),
+      bodySmall: getRegularStyle(color: ColorsManager.white),
     ),
 
     //inputDecoration theme

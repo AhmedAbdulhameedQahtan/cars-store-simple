@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^5.4.5
   awesome_dialog: ^3.2.1
   flutter_localization: ^0.2.3
+  easy_localization: ^3.0.7
 
 
 
@@ -81,8 +82,7 @@ flutter:
     - assets/images/car6.png
     - assets/images/car7.png
     - assets/images/car8.png
-    - assets/languages/ar.json
-    - assets/languages/en.json
+    - assets/translations/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

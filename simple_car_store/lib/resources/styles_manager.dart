@@ -11,8 +11,8 @@ TextStyle _getTextStyle(double fontSize , FontWeight fontWeight , Color color){
   );}
 
 //regular style
-TextStyle getRegularStyle({double fontSize = FontSize.s12,required Color color}){
-  return _getTextStyle(fontSize, FontWeighManager.regular, color);
+TextStyle getRegularStyle({double fontSize = FontSize.s16,required Color color}){
+  return _getTextStyle(fontSize, FontWeighManager.bold, color);
 }
 
 //medum style

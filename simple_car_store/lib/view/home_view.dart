@@ -1,14 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/assets_manager.dart';
-import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/view/splash_view.dart';
-import '../controller/appLocalization.dart';
 import '../custom_widget/container_card.dart';
-import '../main.dart';
 import '../model/cars_list_of_opject.dart';
 
 class HomeView extends StatefulWidget {
@@ -37,6 +35,7 @@ class _HomeViewState extends State<HomeView> {
     // );
 
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -61,106 +60,179 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
+  String? user = FirebaseAuth.instance.currentUser?.email;
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: [
-            const SizedBox(height: 50,),
-            ElevatedButton(onPressed: (){
-              Locale newLocale =
-              Localizations.localeOf(context).languageCode == 'en'
-                  ? const Locale('ar')
-                  : const Locale('en');
-              MyApp.setLocale(context, newLocale);
-            }, child: const Text('change language'),
-      )
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        title: CustomTextFormField(
-            textController: _searchController,
-            textInputType: TextInputType.text,
-          prefixIcon: const Icon(Icons.search),
-          hintText:AppLocalizations.of(context)!.translate('search') ?? '',
-
-        ),
-
-        actions: [
-          Padding(
-            padding:const EdgeInsets.only(right: 10),
-            child: IconButton(
-                onPressed: (){
-
-                   _logout(context);
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: const Text("أحمد قحطان"),
+                accountEmail:  Text(user!),
+                currentAccountPicture: InkWell(
+                  onTap: () {
+                    // controller.pickImage(ImageSource.gallery);
                   },
-                icon: const Icon(Icons.logout,size: 25,),
-                color: ColorsManager.white, // لون الأيقونة
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 10),
-        height: size.height,
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Container(
-              width: size.width,
-              height: 30,
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child:  Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    // 'Popular Car',
-                    AppLocalizations.of(context)!.translate('popular_car') ?? '',
+                  // child: CircleAvatar(
+                  //   radius: 45,
+                  //   backgroundColor: Colors.transparent,
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       image: controller.image != null
+                  //           ? DecorationImage(
+                  //         fit: BoxFit.cover,
+                  //         image: FileImage(
+                  //             controller.image!),
+                  //       )
+                  //           : const DecorationImage(
+                  //         fit: BoxFit.cover,
+                  //         image: AssetImage("assets/image/user.png"),
+                  //       ),
+                  //       borderRadius:
+                  //       const BorderRadius.all(Radius.circular(90.0)),
+                  //       border: Border.all(
+                  //         color: Colors.black12,
+                  //         width: 1,
+                  //       ),
+                  //     ),
+                  //     width: size.width * 0.45,
+                  //     height: size.height * 0.21,
+                  //   ),
+                  // ),
+                ),
 
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  Text(
-                      // 'Show more',
-                      AppLocalizations.of(context)!.translate('show_more') ?? '',
-
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700, color: Colors.grey))
-                ],
+                decoration:  BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  boxShadow: const [
+                   BoxShadow(
+                      color: Colors.black26,
+                      spreadRadius: 3,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // يغير مكان الظل
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            // menu container
-            Container(
-              height: size.height / 1.2,
-              width: size.width,
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, mainAxisExtent: 250.0),
-                itemCount: ImageAssets.carimage.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final car = carDetails[index];
-                  return ContainerCarCard(
-                    isFavorite: false,
-                    img: ImageAssets.carimage[index],
-                    carDetails: car,
-                    price: "18,500",
-                  );
+              ListTile(
+                leading: const Icon(Icons.language),
+                title:  Text('change_language'.tr()),
+                onTap: () {
+                  context.locale.languageCode == 'en' ?
+                  context.setLocale(const Locale('ar')) :
+                  context.setLocale(const Locale('en'));
                 },
               ),
-            )
-          ],
+
+              ListTile(
+                leading: const Icon(Icons.star),
+                title:  Text('favorite'.tr()),
+                onTap: () {
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.category),
+                title:  Text('categories'.tr()),
+                onTap: () {
+                },
+              ),
+
+              const Divider(),
+
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title:  Text('setting'.tr()),
+                onTap: () {
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.question_mark),
+                title:  Text('about_app'.tr()),
+                onTap: () {
+                },
+              ),
+
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: Text('logout'.tr()),
+                onTap: () {
+                  _logout(context);
+                },
+              ),
+
+            ],
+          ),
         ),
-      ),
+        appBar: AppBar(
+          title: CustomTextFormField(
+              textController: _searchController,
+              textInputType: TextInputType.text,
+            prefixIcon: const Icon(Icons.search),
+            hintText:'search'.tr(),
+
+          ),
+
+        ),
+        body: Container(
+          margin: const EdgeInsets.only(top: 10),
+          height: size.height,
+          color: Colors.white,
+          child: ListView(
+            children: [
+              Container(
+                width: size.width,
+                height: 30,
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child:  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('popular_car'.tr(),
+                      style: Theme.of(context).textTheme.titleLarge
+                      // const TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    Text('show_more'.tr(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.grey))
+                  ],
+                ),
+              ),
+
+              // menu container
+              Container(
+                height: size.height / 1.2,
+                width: size.width,
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10))),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, mainAxisExtent: 250.0),
+                  itemCount: ImageAssets.carimage.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final car = carDetails[index];
+                    return ContainerCarCard(
+                      isFavorite: false,
+                      img: ImageAssets.carimage[index],
+                      carDetails: car,
+                      price: "18,500",
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
     );
   }
 }

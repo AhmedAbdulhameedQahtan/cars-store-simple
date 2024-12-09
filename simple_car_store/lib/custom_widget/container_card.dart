@@ -56,8 +56,8 @@ class _ContainerCarCardState extends State<ContainerCarCard> {
               ),
 
               const SizedBox(height: 120,),
-              Text(widget.carDetails?["model"]),
-              Text("\$ ${widget.price!}"),
+              Text(widget.carDetails?["model"],style: Theme.of(context).textTheme.bodySmall,),
+              Text("\$ ${widget.price!}",style: Theme.of(context).textTheme.bodySmall,),
             ],
           )
       ),

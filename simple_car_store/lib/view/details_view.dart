@@ -26,7 +26,8 @@ class _DetailsViewState extends State<DetailsView> {
       appBar: AppBar(
         backgroundColor: ColorsManager.lightBlack,
         elevation: 0,
-          iconTheme: IconThemeData(color: ColorsManager.white)),
+          // iconTheme: IconThemeData(color: ColorsManager.white)),
+      ),
         body: Container(
           width: size.width,
           height: size.height,
@@ -65,7 +66,10 @@ class _DetailsViewState extends State<DetailsView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                      Text(widget.carDetails?["model"],style: const TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s30),),
+                      Text(widget.carDetails?["model"],
+                          style:Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 30)
+                      // TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s30),
+                      ),
                       Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +78,7 @@ class _DetailsViewState extends State<DetailsView> {
                                 onPressed: (){},
                                 icon:const Icon(Icons.star ,color: Colors.yellow,)
                             ),
-                            const Text("(4.5)",style: TextStyle(fontWeight: FontWeighManager.bold,)),
+                             Text("(4.5)",style:Theme.of(context).textTheme.titleSmall),
                           ],
                         ),
                       ),
@@ -90,7 +94,9 @@ class _DetailsViewState extends State<DetailsView> {
                         "${widget.carDetails?["brand"]} "
                         "${widget.carDetails?["model"]} "
                         "${widget.carDetails?["type"]} "
-                        "(${widget.carDetails?["fuelType"]}) "),
+                        "(${widget.carDetails?["fuelType"]}) ",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ),
 
                   // Features container
@@ -102,7 +108,7 @@ class _DetailsViewState extends State<DetailsView> {
                     child:Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Features",style: TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s16)),
+                         Text("Features",style: Theme.of(context).textTheme.titleLarge),
                         Container(
                           padding: const EdgeInsets.all(3),
                           // color: ColorsManager.lightBlack,
@@ -131,8 +137,8 @@ class _DetailsViewState extends State<DetailsView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    const Icon(Icons.airline_seat_recline_extra_sharp),
-                                    const Text("Total Capacity"),
+                                     Icon(Icons.airline_seat_recline_extra_sharp,color: ColorsManager.darkgray,),
+                                     Text("Total Capacity",style: Theme.of(context).textTheme.bodyMedium,),
                                     Text("${widget.carDetails?["seatingCapacity"]} seat",style:const TextStyle(fontWeight: FontWeight.bold),)
                                   ],
                                 ),
@@ -157,8 +163,8 @@ class _DetailsViewState extends State<DetailsView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    const Icon(Icons.speed),
-                                    const Text("Highest speed"),
+                                     Icon(Icons.speed,color: ColorsManager.darkgray,),
+                                     const Text("Highest speed"),
                                     Text("${widget.carDetails?["maxSpeed"]} KM/H",style:const TextStyle(fontWeight: FontWeight.bold),)
                                   ],
                                 ),
@@ -183,7 +189,7 @@ class _DetailsViewState extends State<DetailsView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
-                                    const Icon(Icons.directions_car_filled),
+                                     Icon(Icons.directions_car_filled,color: ColorsManager.darkgray,),
                                     const Text("Engine "),
                                     Text("${widget.carDetails?["engine"]}",style:const TextStyle(fontWeight: FontWeight.bold),)
                                   ],
@@ -211,7 +217,7 @@ class _DetailsViewState extends State<DetailsView> {
                            padding:const  EdgeInsets.only(top:25),
                           child: const Column(
                             children: [
-                              Text("price",style: TextStyle(fontWeight: FontWeighManager.bold,)),
+                              Text("price"),
                               Text("\$18,500",style: TextStyle(fontWeight: FontWeighManager.bold,fontSize: FontSize.s20)),
                             ],
                           ),

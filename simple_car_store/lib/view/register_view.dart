@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
@@ -45,8 +46,9 @@ class _RegisterViewState extends State<RegisterView> {
       context: context,
       dialogType: DialogType.error,
       animType: AnimType.rightSlide,
-      title: 'Error',
+      title: 'error_title'.tr(),
       desc: errorMessage,
+      descTextStyle: Theme.of(context).textTheme.bodySmall,
       btnOkOnPress: () {},
     ).show();
   }
@@ -58,7 +60,7 @@ class _RegisterViewState extends State<RegisterView> {
 
     if (!isEmailValid(email)) {
       // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
-      onGeneralError('write real email');
+      onGeneralError('error_real_email'.tr());
       return;
     }
 
@@ -67,6 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
         var result = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
 
+        // ارسال التحقق للبريد بالغه العربية
         await _auth.setLanguageCode("ar");
         await _auth.currentUser?.sendEmailVerification();
 
@@ -118,7 +121,7 @@ class _RegisterViewState extends State<RegisterView> {
       body: Container(
         width: size.width,
         height: size.height,
-        color: ColorsManager.lightBlack,
+        color: Theme.of(context).colorScheme.surface,
         child: Form(
           key: _formKey,
           child: ListView(
@@ -127,32 +130,26 @@ class _RegisterViewState extends State<RegisterView> {
               Container(
                   width: size.width,
                   height: size.height / 4,
-                  padding: const EdgeInsets.only(left: 15, top: 15),
+                  padding:context.locale.languageCode == 'en' ? const EdgeInsets.only(left: 15, top: 15):const EdgeInsets.only(right: 15, top: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'H e llo',
-                        style: TextStyle(
-                            fontFamily: 'orban',
-                            fontSize: FontSize.s40,
-                            fontWeight: FontWeighManager.bold,
-                            color: ColorsManager.primary),
+                        'register_head'.tr(),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontFamily: 'orban', fontSize: FontSize.s40,),
+
                       ),
                       Text(
-                        't h e r e !',
-                        style: TextStyle(
-                            fontFamily: 'orban',
-                            fontSize: FontSize.s25,
-                            fontWeight: FontWeighManager.bold,
-                            color: ColorsManager.white),
+                        'register_title'.tr(),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontFamily: 'orban', fontSize: FontSize.s25,),
+
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       Text(
-                        'Create an account to access your purchase history and get real-time updates on your car orders',
-                        style: TextStyle(color: ColorsManager.lightgray),
+                        'register_text'.tr(),
+                        style:  Theme.of(context).textTheme.headlineLarge,
                       ),
                     ],
                   )),
@@ -166,7 +163,7 @@ class _RegisterViewState extends State<RegisterView> {
                 textController: _emailController,
                 textInputType: TextInputType.emailAddress,
                 prefixIcon: const Icon(Icons.email_outlined),
-                hintText: "Email",
+                hintText: 'email'.tr(),
               ),
 
               const SizedBox(
@@ -178,7 +175,7 @@ class _RegisterViewState extends State<RegisterView> {
                 textController: _passwordController,
                 textInputType: TextInputType.visiblePassword,
                 prefixIcon: const Icon(Icons.lock),
-                hintText: "Password",
+                hintText: 'password'.tr(),
                 obscureText: true,
               ),
 
@@ -191,7 +188,7 @@ class _RegisterViewState extends State<RegisterView> {
                 textController: _confirmController,
                 textInputType: TextInputType.visiblePassword,
                 prefixIcon: const Icon(Icons.lock),
-                hintText: "confirm Password",
+                hintText: 'confirm_password'.tr(),
                 obscureText: true,
               ),
 
@@ -220,7 +217,7 @@ class _RegisterViewState extends State<RegisterView> {
                       child: TextButton(
                         onPressed: () {},
                         child: Text(
-                          'Agree to our Terms of Services and Privacy Policy',
+                          'privacy_policy'.tr(),
                           style: TextStyle(
                             color: ColorsManager.primary,
                           ),
@@ -259,9 +256,9 @@ class _RegisterViewState extends State<RegisterView> {
                           BorderRadius.circular(10), // تحديد نصف قطر الزوايا
                     ),
                   ),
-                  child: const Text(
-                    'signup',
-                    style: TextStyle(color: Colors.white),
+                  child:  Text(
+                    'sign_up'.tr(),
+                    style:const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -296,9 +293,9 @@ class _RegisterViewState extends State<RegisterView> {
                         width: 50,
                         height: 50,
                       ),
-                      const Text(
-                        'Continue with google',
-                        style: TextStyle(
+                       Text(
+                        'google_sign_in'.tr(),
+                        style:const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -312,13 +309,13 @@ class _RegisterViewState extends State<RegisterView> {
 
               // text to sign in page
               Container(
-                margin: const EdgeInsets.only(left: 100),
+                margin:context.locale.languageCode == 'en' ? const EdgeInsets.only(left: 90):const EdgeInsets.only(right: 100),
                 child: Center(
                   child: Row(
                     children: [
                       Text(
-                        'Already have account',
-                        style: TextStyle(color: ColorsManager.white),
+                        'have_account'.tr(),
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       TextButton(
                         onPressed: () {
@@ -328,7 +325,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   builder: (context) => const LoginView()));
                         },
                         child: Text(
-                          'login',
+                          'login'.tr(),
                           style: TextStyle(color: ColorsManager.primary),
                         ),
                       )

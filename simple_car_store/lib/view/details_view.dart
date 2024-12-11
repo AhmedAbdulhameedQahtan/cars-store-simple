@@ -26,7 +26,6 @@ class _DetailsViewState extends State<DetailsView> {
       appBar: AppBar(
         backgroundColor: ColorsManager.lightBlack,
         elevation: 0,
-          // iconTheme: IconThemeData(color: ColorsManager.white)),
       ),
         body: Container(
           width: size.width,
@@ -78,7 +77,7 @@ class _DetailsViewState extends State<DetailsView> {
                                 onPressed: (){},
                                 icon:const Icon(Icons.star ,color: Colors.yellow,)
                             ),
-                             Text("(4.5)",style:Theme.of(context).textTheme.titleSmall),
+                             Text("(4.5)",style:Theme.of(context).textTheme.bodyMedium),
                           ],
                         ),
                       ),

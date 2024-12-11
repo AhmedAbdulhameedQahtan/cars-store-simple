@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_car_store/custom_widget/container_card.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
@@ -30,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String errorMessage = "";
-  bool checkBoxState = false;
+  bool checkBoxState = true;
   bool obscureText = true;
   String? myToken = "";
 
@@ -113,11 +115,11 @@ class _LoginViewState extends State<LoginView> {
       // الانتقال إلى الصفحة التالية بعد تسجيل الدخول بنجاح
 
       if ((result != null) ) {
-        if (checkBoxState != true) {
-          // حفظ الحاله
-          _auth.signOut();
-          print("===================state log oyt ===============");
-        }
+        // if (checkBoxState != true) {
+        //   // حفظ الحاله
+        //   _auth.signOut();
+        //   // print("===================state log oyt ===============");
+        // }
           _db.collection('users').doc(result.user!.uid,).update({'token':myToken,});
         Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomeView()),);
       }
@@ -150,7 +152,7 @@ class _LoginViewState extends State<LoginView> {
       body: Container(
         width: size.width,
         height: size.height,
-        color: ColorsManager.lightBlack,
+        color:Theme.of(context).colorScheme.surface,
         child: Form(
           key: _formKey,
           child: ListView(
@@ -159,33 +161,25 @@ class _LoginViewState extends State<LoginView> {
               Container(
                   width: size.width,
                   height: size.height / 4,
-                  padding: const EdgeInsets.only(
-                      left: AppSize.s20, top: AppSize.s15),
+                  padding:context.locale.languageCode == 'en' ? const EdgeInsets.only(left: AppSize.s20, top: AppSize.s15)
+                  :const EdgeInsets.only(right: AppSize.s20, top: AppSize.s15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'welcome',
-                        style: TextStyle(
-                            fontFamily: 'orban',
-                            fontSize: FontSize.s40,
-                            fontWeight: FontWeighManager.bold,
-                            color: ColorsManager.primary),
+                        'login_head'.tr(),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontFamily: 'orban', fontSize: FontSize.s40,),
                       ),
                       Text(
-                        'Bac k !',
-                        style: TextStyle(
-                            fontFamily: 'orban',
-                            fontSize: FontSize.s25,
-                            fontWeight: FontWeighManager.bold,
-                            color: ColorsManager.white),
+                        'register_title'.tr(),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(fontFamily: 'orban', fontSize: FontSize.s25,),
                       ),
                       const SizedBox(
                         height: AppSize.s10,
                       ),
                       Text(
-                        'Sign in to access your purchase history and get real-time updates on your car orders',
-                        style: TextStyle(color: ColorsManager.lightgray),
+                        'login_text'.tr(),
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ],
                   )),
@@ -197,7 +191,7 @@ class _LoginViewState extends State<LoginView> {
                 textController: _emailController,
                 textInputType: TextInputType.emailAddress,
                 prefixIcon:const  Icon(Icons.email_outlined),
-                hintText: "Email",
+                hintText: 'email'.tr(),
               ),
               
               const SizedBox(
@@ -209,7 +203,7 @@ class _LoginViewState extends State<LoginView> {
                 textController: _passwordController,
                 textInputType: TextInputType.visiblePassword,
                 prefixIcon:const  Icon(Icons.lock),
-                hintText: "Password",
+                hintText: 'password'.tr(),
                 obscureText: true,
               ),
 
@@ -238,8 +232,8 @@ class _LoginViewState extends State<LoginView> {
                               },
                             ),
                             Text(
-                              'Remember me ',
-                              style: TextStyle(color: ColorsManager.white),
+                              'remember_me'.tr(),
+                              style:Theme.of(context).textTheme.headlineLarge,
                             ),
                           ],
                         ),
@@ -252,7 +246,7 @@ class _LoginViewState extends State<LoginView> {
                                   builder: (context) => const LoginView()));
                         },
                         child: Text(
-                          'Forgot password',
+                          'forgot_password'.tr(),
                           style: TextStyle(color: ColorsManager.primary),
                         ),
                       ),
@@ -287,9 +281,9 @@ class _LoginViewState extends State<LoginView> {
                           BorderRadius.circular(10), // تحديد نصف قطر الزوايا
                     ),
                   ),
-                  child: const Text(
-                    'login',
-                    style: TextStyle(color: Colors.white),
+                  child:  Text(
+                    'login'.tr(),
+                    style:const TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -323,9 +317,9 @@ class _LoginViewState extends State<LoginView> {
                         width: 50,
                         height: 50,
                       ),
-                      const Text(
-                        'Continue with google',
-                        style: TextStyle(
+                       Text(
+                        'google_sign_in'.tr(),
+                        style:const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w700),
                       ),
                     ],
@@ -338,13 +332,12 @@ class _LoginViewState extends State<LoginView> {
               ),
 
               Container(
-                margin: const EdgeInsets.only(left: 70),
+                margin:context.locale.languageCode == 'en' ? const EdgeInsets.only(left: 55):const EdgeInsets.only(right: 100),
                 child: Center(
                   child: Row(
                     children: [
-                      Text(
-                        'Dont have account?',
-                        style: TextStyle(color: ColorsManager.white),
+                      Text('dont_have_account'.tr(),
+                        style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       TextButton(
                         onPressed: () {
@@ -354,8 +347,8 @@ class _LoginViewState extends State<LoginView> {
                                   builder: (context) => const RegisterView()));
                         },
                         child: Text(
-                          'Create an Account',
-                          style: TextStyle(color: ColorsManager.primary),
+                          'create_account'.tr(),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       )
                     ],

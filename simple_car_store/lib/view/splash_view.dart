@@ -6,6 +6,7 @@ import 'package:simple_car_store/resources/assets_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
 import 'package:simple_car_store/resources/values_manager.dart';
 import 'package:simple_car_store/view/home_view.dart';
+import 'package:simple_car_store/view/login_view.dart';
 import '../model/firbase_auth.dart';
 import '../resources/color_manager.dart';
 import '../resources/constant_manager.dart';
@@ -21,7 +22,7 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  // final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   Timer? _timer;
   bool? isLoggedIn;
 
@@ -36,7 +37,7 @@ class _SplashViewState extends State<SplashView> {
   Future<void> _checkLoginStatus() async {
 
     isLoggedIn == false ?
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>  NetworkChecker())):
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const LoginView())):
     Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomeView()));
 
     // هذه الطريقه عن طريق التخزين في ذاكرة الداتا
@@ -81,9 +82,6 @@ class _SplashViewState extends State<SplashView> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      
-        // appBar: null,
-      
         backgroundColor:Theme.of(context).colorScheme.surface,
       
         body:Container(
@@ -106,7 +104,7 @@ class _SplashViewState extends State<SplashView> {
               Container(
                 padding: const EdgeInsets.all(5),
                 margin: const EdgeInsets.all(10),
-                child: Text("By using car ,you can move quickly from one place to another in your daily life",
+                child: Text('splash_text'.tr(),
                   style: Theme.of(context).textTheme.bodyLarge,
                   // TextStyle(color: ColorsManager.lightgray,fontSize: FontSize.s14),
                 ),
@@ -124,12 +122,6 @@ class _SplashViewState extends State<SplashView> {
                     var user = FirebaseAuth.instance.currentUser;
                     (user == null) ? isLoggedIn = false : isLoggedIn = true ;
                     _checkLoginStatus();
-                    // تغيير اللغة عند الضغط
-                    // Locale newLocale =
-                    // Localizations.localeOf(context).languageCode == 'en'
-                    //     ? const Locale('ar')
-                    //     : const Locale('en');
-                    // MyApp.setLocale(context, newLocale);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: ColorsManager.primary,
@@ -139,7 +131,7 @@ class _SplashViewState extends State<SplashView> {
                       borderRadius: BorderRadius.circular(10), // تحديد نصف قطر الزوايا
                     ),
                   ),
-                  child:   Text('Get Started',style: TextStyle(color:ColorsManager.white,fontWeight: FontWeighManager.bold),),
+                  child:   Text('get_started'.tr(),style: TextStyle(color:ColorsManager.white,fontWeight: FontWeighManager.bold),),
       
                 ),
               ),

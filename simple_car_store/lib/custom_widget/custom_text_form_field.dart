@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_car_store/custom_widget/container_card.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 
 class CustomTextFormField extends StatefulWidget {
@@ -50,7 +52,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ),
         validator: (value) {
           if (value!.isEmpty) {
-            return 'please fill the ${widget.hintText} input';
+            return "${'error'.tr()} ${widget.hintText}" ;
           }
         },
       ),

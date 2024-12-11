@@ -124,6 +124,43 @@ class AppThemes {
         borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8)),
       ),
     ),
+
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          // اللون الرئيسي
+          foregroundColor: WidgetStateProperty.all(ColorsManager.gray),
+
+
+          // لون الخلفية
+          // backgroundColor: ColorsManager.lightgray200,
+
+          // حجم الأيقونة
+          // iconSize: WidgetStateProperty.all(24.0),
+
+          // الهوامش والمسافات
+          // padding: MaterialStateProperty.all(
+          //   const EdgeInsets.all(AppPadding.p8),
+          // ),
+          //
+          // // شكل الحواف
+          // shape: MaterialStateProperty.all(
+          //   RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.circular(AppSize.s8),
+          //   ),
+          // ),
+          //
+          // // تأثير النقر
+          // overlayColor: MaterialStateProperty.resolveWith((states) {
+          //   if (states.contains(MaterialState.pressed)) {
+          //     return ColorsManager.lightprimary.withOpacity(0.2);
+          //   }
+          //   return null;
+          // }),
+        ),
+      )
+
+
+
   );
 
   static final darkTheme = ThemeData(
@@ -186,7 +223,7 @@ class AppThemes {
       displayLarge: getBoldStyle(color: ColorsManager.darkgray, fontSize: FontSize.s16),
       displayMedium: getLightStyle(color: ColorsManager.darkgray, fontSize: FontSize.s16),
       displaySmall: getLightStyle(color: ColorsManager.darkgray, fontSize: FontSize.s16),
-      headlineLarge: getSimpoldStyle(color: ColorsManager.darkgray, fontSize: FontSize.s16,),
+      headlineLarge: getSimpoldStyle(color: ColorsManager.lightgray, fontSize: FontSize.s16,),
       headlineMedium: getRegularStyle(color: ColorsManager.darkgray, fontSize: FontSize.s14,),
       titleLarge: getRegularStyle(color: ColorsManager.primary),
       titleMedium: getMedumStyle(color: ColorsManager.primary, fontSize: FontSize.s16),
@@ -201,6 +238,8 @@ class AppThemes {
       //content padding
       contentPadding: const EdgeInsets.all(AppPadding.p8),
 
+      iconColor: ColorsManager.lightBlack,
+
       //hint style
       hintStyle:
           getRegularStyle(color: ColorsManager.gray, fontSize: FontSize.s14),
@@ -211,7 +250,7 @@ class AppThemes {
 
       fillColor: ColorsManager.lightgray200,
       //error style
-      errorStyle: getRegularStyle(color: ColorsManager.error),
+      errorStyle: getSimpoldStyle(color: ColorsManager.error),
 
       //enable border style
       enabledBorder: OutlineInputBorder(
@@ -240,5 +279,14 @@ class AppThemes {
         borderRadius: const BorderRadius.all(Radius.circular(AppSize.s8)),
       ),
     ),
+
+       iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          // اللون الرئيسي
+          foregroundColor: WidgetStateProperty.all(ColorsManager.gray),
+        ),
+      )
+
+
   );
 }

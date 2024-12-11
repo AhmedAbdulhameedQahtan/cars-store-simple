@@ -74,7 +74,7 @@ class _HomeViewState extends State<HomeView> {
             padding: EdgeInsets.zero,
             children: <Widget>[
               UserAccountsDrawerHeader(
-                accountName:  Text("أحمد قحطان",style: TextStyle(color: ColorsManager.white),),
+                accountName:  Text("Ahmed Qahtan",style: TextStyle(color: ColorsManager.white),),
                 accountEmail:  Text(user!,style: TextStyle(color: ColorsManager.white),),
                 currentAccountPicture: InkWell(
                   onTap: () {
@@ -176,7 +176,7 @@ class _HomeViewState extends State<HomeView> {
           title: CustomTextFormField(
               textController: _searchController,
               textInputType: TextInputType.text,
-            prefixIcon: const Icon(Icons.search),
+            prefixIcon:  Icon(Icons.search,color: ColorsManager.lightgray,),
             hintText:'search'.tr(),
 
           ),

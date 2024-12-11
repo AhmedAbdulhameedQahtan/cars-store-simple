@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../resources/color_manager.dart';
 import '../view/details_view.dart';
@@ -24,7 +25,7 @@ class _ContainerCarCardState extends State<ContainerCarCard> {
       },
       child: Container(
           margin:const EdgeInsets.all(10),
-          padding:const EdgeInsets.only(left: 5,top: 5),
+          padding: context.locale.languageCode == 'en' ?const EdgeInsets.only(left: 5,top: 5):const EdgeInsets.only(right: 5,top: 5),
           decoration: BoxDecoration(
             borderRadius:const BorderRadius.all(Radius.circular(15)),
             color: Theme.of(context).colorScheme.surface,

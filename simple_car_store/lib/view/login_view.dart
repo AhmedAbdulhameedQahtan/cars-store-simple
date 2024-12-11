@@ -1,19 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_car_store/custom_widget/container_card.dart';
+import 'package:simple_car_store/controller/loginController.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/resources/font_manager.dart';
-import 'package:simple_car_store/view/home_view.dart';
 import 'package:simple_car_store/view/register_view.dart';
 import '../resources/assets_manager.dart';
 import '../resources/values_manager.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-
-
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -25,124 +18,14 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   
   final _formKey = GlobalKey<FormState>();
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  String errorMessage = "";
-  bool checkBoxState = true;
-  bool obscureText = true;
-  String? myToken = "";
-
-  // Future<void> _login(BuildContext context) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setBool('isLoggedIn', true); // حفظ حالة تسجيل الدخول
-  // }
-
-  // تحقق من صحة تنسيق البريد الإلكتروني
-  bool isEmailValid(String email) {
-    String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-    RegExp regExp = RegExp(emailPattern);
-    return regExp.hasMatch(email);
-  }
-
-  getToken() async {
-    myToken = await _fcm.getToken();
-    print("mytoken =============$myToken");
-  }
-
-  void onAuthError(String errorCode, String? message) {
-    // عرض حوار الخطأ
-    String? title;
-    String? desc;
-
-    if (errorCode == 'user-not-found') {
-      title = 'User Not Found';
-      desc = 'No user found for that email.';
-    } else if (errorCode == 'wrong-password') {
-      title = 'Wrong Password';
-      desc = 'The password is incorrect.';
-    } else if (errorCode == 'invalid-credential'){
-      title = 'error'.tr();
-      desc = 'invalid_credential'.tr();
-    }
-    print("=====title======$title====================");
-    print("==desc=========$desc====================");
-
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.error,
-      animType: AnimType.rightSlide,
-      title: title,
-      desc: desc,
-      descTextStyle: Theme.of(context).textTheme.bodySmall,
-      btnOkOnPress: () {},
-    ).show();
-  }
-
-  void onGeneralError(String errorMessage) {
-    // عرض حوار لأي خطأ عام
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.error,
-      animType: AnimType.rightSlide,
-      title: 'error'.tr(),
-      desc: errorMessage,
-      descTextStyle: Theme.of(context).textTheme.bodySmall,
-      btnOkOnPress: () {},
-    ).show();
-  }
-
-
-  Future<void> signIn( email,password) async {
-
-    if (!isEmailValid(email)) {
-      // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
-      AwesomeDialog(
-          context: context,
-          dialogType: DialogType.error,
-          animType: AnimType.rightSlide,
-          title: 'error'.tr(),
-          desc: 'error_real_email'.tr(),
-        descTextStyle: Theme.of(context).textTheme.bodySmall,
-        btnOkOnPress: () {},
-    ).show();
-      return;
-    }else{
-
-    try {
-      var result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // الانتقال إلى الصفحة التالية بعد تسجيل الدخول بنجاح
-
-      if ((result != null) ) {
-        // if (checkBoxState != true) {
-        //   // حفظ الحاله
-        //   _auth.signOut();
-        //   // print("===================state log oyt ===============");
-        // }
-          _db.collection('users').doc(result.user!.uid,).update({'token':myToken,});
-        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => const HomeView()),);
-      }
-    } on FirebaseAuthException catch (e) {
-      onAuthError(e.code,e.message);
-    }catch (e) {
-
-      // عرض رسالة منبثقة عند حدوث خطأ أثناء تسجيل الدخول
-      onGeneralError(e.toString());
-
-      print("حدث خطأ أثناء تسجيل الدخول: $e");
-    }
-    }
-    }
-
-
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  LoginController loginController = LoginController();
 
   @override
   void initState() {
     // TODO: implement initState
-    getToken();
+    loginController.getMyToken();
     super.initState();
   }
 
@@ -222,14 +105,14 @@ class _LoginViewState extends State<LoginView> {
                         child: Row(
                           children: [
                             Checkbox(
-                              value: checkBoxState,
+                              value:loginController.checkBoxState,
                               checkColor: ColorsManager.white,
                               activeColor: ColorsManager.primary,
                               onChanged: (value) {
                                 setState(() {
-                                  checkBoxState = value!;
+                                  loginController.checkBoxState = value!;
                                   print(
-                                      "checkBoxState======================$checkBoxState");
+                                      "checkBoxState======================$loginController.checkBoxState");
                                 });
                               },
                             ),
@@ -266,7 +149,7 @@ class _LoginViewState extends State<LoginView> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       // setState(() {
-                        signIn(_emailController.text.trim(),_passwordController.text.trim());
+                        loginController.signIn(context,_emailController.text.trim(),_passwordController.text.trim());
                       // });
                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const HomeView()));
                     }

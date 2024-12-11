@@ -1,13 +1,11 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_car_store/controller/RegisterController.dart';
 import 'package:simple_car_store/custom_widget/custom_text_form_field.dart';
 import 'package:simple_car_store/resources/color_manager.dart';
 import 'package:simple_car_store/view/login_view.dart';
 import '../resources/assets_manager.dart';
 import '../resources/font_manager.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -17,96 +15,12 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  // final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmController = TextEditingController();
-  bool obscurePasswordText = true;
-  bool obscureConfirmText = true;
-  bool checkBoxState = false;
-  String? myToken = "";
-
-  // getToken() async {
-  //   myToken = await _fcm.getToken();
-  //   print("mytoken =============$myToken");
-  // }
-
-  bool isEmailValid(String email) {
-    String emailPattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-    RegExp regExp = RegExp(emailPattern);
-    return regExp.hasMatch(email);
-  }
-
-  void onGeneralError(String errorMessage) {
-    // عرض رسالة لأي خطأ عام
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.error,
-      animType: AnimType.rightSlide,
-      title: 'error_title'.tr(),
-      desc: errorMessage,
-      descTextStyle: Theme.of(context).textTheme.bodySmall,
-      btnOkOnPress: () {},
-    ).show();
-  }
-
-  Future<void> createAccount() async {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
-    String confirmPassword = _confirmController.text.trim();
-
-    if (!isEmailValid(email)) {
-      // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
-      onGeneralError('error_real_email'.tr());
-      return;
-    }
-
-    try {
-      if ((confirmPassword == password) && (checkBoxState == true)) {
-        var result = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-
-        // ارسال التحقق للبريد بالغه العربية
-        await _auth.setLanguageCode("ar");
-        await _auth.currentUser?.sendEmailVerification();
-
-
-        if((result!=null)){
-          _db.collection('users').doc(result.user!.uid,).set({
-            'email':result.user!.email,
-            'password':result.user!.uid,
-            'token':myToken,
-          });
-        }
-        // الانتقال إلى الصفحة التالية بعد انشاء الحساب بنجاح
-
-        print("تم انشاء الحساب بنجاح$result!");
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginView()),
-        );
-      } else {
-        // في حال لم يتطابق كلمة المرور مع تحقق كلمة المرور
-        onGeneralError('check_password'.tr());
-      }
-    }on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        onGeneralError('weak_password'.tr());
-        print('');
-      } else if (e.code == 'email-already-in-use') {
-        onGeneralError('email-already-in-use'.tr());
-        print('The account already exists for that email.');
-      }
-    }
-    catch (e) {
-      // عرض رسالة منبثقة عند حدوث خطأ أثناء انشاء الحساب
-      onGeneralError(e.toString());
-      print("حدث خطأ أثناء انشاء الحساب: $e");
-    }
-  }
+  RegisterController registerController = RegisterController();
 
   @override
   void initState() {
@@ -202,14 +116,14 @@ class _RegisterViewState extends State<RegisterView> {
                 child: Row(
                   children: [
                     Checkbox(
-                      value: checkBoxState,
+                      value:registerController.checkBoxState,
                       checkColor: ColorsManager.white,
                       activeColor: ColorsManager.primary,
                       onChanged: (value) {
                         setState(() {
-                          checkBoxState = value!;
+                          registerController.checkBoxState = value!;
                           print(
-                              "checkBoxState======================$checkBoxState");
+                              "checkBoxState======================$registerController.checkBoxState");
                         });
                       },
                     ),
@@ -239,7 +153,10 @@ class _RegisterViewState extends State<RegisterView> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
-                        createAccount();
+                        registerController.createAccount(context,
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                          _confirmController.text.trim(),);
                       });
                       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const HomeView()));
                     }

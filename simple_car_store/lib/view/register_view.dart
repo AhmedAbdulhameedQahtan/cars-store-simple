@@ -90,14 +90,14 @@ class _RegisterViewState extends State<RegisterView> {
         );
       } else {
         // في حال لم يتطابق كلمة المرور مع تحقق كلمة المرور
-        onGeneralError('check the password and confirm password');
+        onGeneralError('check_password'.tr());
       }
     }on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        onGeneralError('The password provided is too weak.');
+        onGeneralError('weak_password'.tr());
         print('');
       } else if (e.code == 'email-already-in-use') {
-        onGeneralError('The account already exists for that email.');
+        onGeneralError('email-already-in-use'.tr());
         print('The account already exists for that email.');
       }
     }

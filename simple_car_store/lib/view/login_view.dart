@@ -65,8 +65,8 @@ class _LoginViewState extends State<LoginView> {
       title = 'Wrong Password';
       desc = 'The password is incorrect.';
     } else if (errorCode == 'invalid-credential'){
-      title = 'Invalid Credential';
-      desc = 'The email or password is incorrect. Please try again.';
+      title = 'error'.tr();
+      desc = 'invalid_credential'.tr();
     }
     print("=====title======$title====================");
     print("==desc=========$desc====================");
@@ -77,6 +77,7 @@ class _LoginViewState extends State<LoginView> {
       animType: AnimType.rightSlide,
       title: title,
       desc: desc,
+      descTextStyle: Theme.of(context).textTheme.bodySmall,
       btnOkOnPress: () {},
     ).show();
   }
@@ -87,8 +88,9 @@ class _LoginViewState extends State<LoginView> {
       context: context,
       dialogType: DialogType.error,
       animType: AnimType.rightSlide,
-      title: 'Error',
+      title: 'error'.tr(),
       desc: errorMessage,
+      descTextStyle: Theme.of(context).textTheme.bodySmall,
       btnOkOnPress: () {},
     ).show();
   }
@@ -100,12 +102,12 @@ class _LoginViewState extends State<LoginView> {
       // عرض تنبيه بوجود خطأ في تنسيق البريد الإلكتروني
       AwesomeDialog(
           context: context,
-          dialogType: DialogType.info,
+          dialogType: DialogType.error,
           animType: AnimType.rightSlide,
-          title: 'False Email',
-          desc: 'Write correct email',
-          btnCancelOnPress: () {},
-          btnOkOnPress: () {},
+          title: 'error'.tr(),
+          desc: 'error_real_email'.tr(),
+        descTextStyle: Theme.of(context).textTheme.bodySmall,
+        btnOkOnPress: () {},
     ).show();
       return;
     }else{
